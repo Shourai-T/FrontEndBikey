@@ -10,6 +10,15 @@ const Deposit = () => {
     const [amount, setAmount] = useState<number>(0);
     const predefinedAmounts = [20000, 50000, 100000, 200000];
     const [showRules, setShowRules] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleClick = () => {
+      setIsClicked(true);
+      setShowRules(true);
+    
+      // Reset hiệu ứng sau 200ms
+      setTimeout(() => setIsClicked(false), 200);
+    };
   
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.replace(/\D/g, '');
@@ -24,9 +33,10 @@ const Deposit = () => {
       <div className="min-h-screen bg-white p-6 mt-8">
         {/* Header */}
         <div className="flex justify-end mb-6"
-        onClick={() => setShowRules(true)}
+        onClick={() => {handleClick()}}
         >
-          <h2 className="text-lg font-medium">Quy định</h2>
+          <h2 
+          className={`flex justify-end mb-6 rounded-md px-2 py-1 transition-all duration-200 font-bold ${isClicked ? 'shadow-inner bg-gray-200' : ''}`} >Quy định</h2>
         </div>
 
         {/* Rules Dialog */}
@@ -99,7 +109,8 @@ const Deposit = () => {
               type="text"
               value={formatAmount(amount)}
               onChange={handleAmountChange}
-              className="w-full bg-transparent text-4xl font-bold text-center focus:outline-none"
+              className={`w-full bg-transparent text-4xl text-center focus:outline-none 
+    ${amount === 0 ? "opacity-50" : "opacity-100"}`}
               placeholder="0"
             />
           </div>

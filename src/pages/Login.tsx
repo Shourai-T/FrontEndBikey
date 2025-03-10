@@ -15,12 +15,12 @@ function Login() {
   };
 
   return (
-    <div className="login-container bg-cover bg-center"
+    <div className="login-container bg-cover  h-screen w-screen flex items-center justify-center"
     style={{ backgroundImage: `url(${BgLogin})` }}
     >
 
       {/* Login Form */}
-      <div className="px-8 fixed bottom-4 w-full flex items-center justify-center flex-col gap-10">
+      <div className="px-8 fixed bottom-4 w-full flex items-center justify-center flex-col gap-10 box-sizing">
         <h2 className="text-3xl font-bold">Đăng nhập</h2>
         <form onSubmit={handleSubmit} className="w-full">
           <div className="space-y-7 w-full">
