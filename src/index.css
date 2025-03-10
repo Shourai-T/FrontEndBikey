@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 393px;
+  height: 852px;
+  background-color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+.login-container {
+  background-color: #F8FDFF;
+  min-height: 100%;
+  position: relative;
+}
+
+.wave-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 25%;
+}
+
+.city-illustration {
+  position: absolute;
+  top: 15%;
+  right: 20px;
+  width: 40%;
+  height: auto;
+}
+
+.input-field {
+  @apply w-full pl-10 pr-4 py-3.5 rounded-lg placeholder:text-xs focus:outline-none;
+}
+
+.login-button {
+  @apply w-[204px] mx-auto block py-3 rounded-lg bg-gray-200 text-gray-600 font-medium hover:bg-[#FB8C00] transition-colors;
+}
