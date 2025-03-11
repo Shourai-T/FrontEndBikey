@@ -64,17 +64,17 @@ function History() {
   ];
 
   return (
-    <div className=" mt-12 mx-auto bg-gray-50">
+    <div className=" mt-12 mx-auto bg-white">
       {/* Balance Card */}
-      <div className="mx-8 mt-4 p-6 h-[124px] rounded-[16px] text-white bg-cover bg-center"
+      <div className="mx-8 p-8 h-auto rounded-[16px] text-white bg-cover bg-center items-between"
       style={{ backgroundImage: `url(${BgPayment})` }}
       >
-        <p className="text-[11px] font-normal opacity-80">Số dư hiện tại</p>
-        <p className="text-[20px] font-bold mt-2">123.000 VND</p>
+        <p className="text-[12px] font-normal opacity-80">Số dư hiện tại</p>
+        <p className="text-[24px] font-bold mt-2">123.000 VND</p>
       </div>
 
       {/* Transaction History */}
-      <div className="pt-4">
+      <div className="pt-4 bg-white">
         <h2 className="text-sm font-medium ml-8 mb-4">Lịch sử giao dịch</h2>
         
         <div className="">
@@ -83,7 +83,7 @@ function History() {
               key={transaction.id} 
               className={`flex items-center gap-3 px-8 py-1.5 ${
                 index % 2 === 0 ? 'bg-[#F7F7F7]' : 'bg-white'
-              } rounded-2xl`}
+              } `}
             >
               <div className={`p-2 rounded-full`}>
                 {transaction.type === 'deposit' 
@@ -92,8 +92,8 @@ function History() {
                 }
               </div>
               
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
+              <div className="flex-1 min-w-0 ">
+                <div className="flex items-center justify-between gap-2 ">
                   <p className="text-xs font-semibold truncate">{transaction.description}</p>
                   <p className={`text-xs font-semibold whitespace-nowrap ${
                     transaction.type === 'deposit' 
