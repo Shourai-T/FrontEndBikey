@@ -31,11 +31,11 @@ const HomePage = () => {
                 </div>
                 <p className="text-sm mt-3 text-white">Xin chào, <b>Nguyễn Thị Vân A</b></p>
                 {/* Search Bar */}
-                <div className="relative mb-6 mt-4">
+                <div className="relative mb-6 mt-4 items-center ">
                     <input
                         type="text"
                         placeholder="Tìm kiếm trạm xe đạp"
-                        className="w-full h-9 bg-white rounded-full py-1 px-5 pr-12 text-[#666666] border border-[#666666] placeholder-[#666666] placeholder:text-xs"
+                        className="w-full h-9 bg-white rounded-full pb-1 px-5 pr-12 text-[#666666] border border-[#666666] placeholder-[#666666] placeholder:text-xs "
                     />
                     <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
                 </div>
@@ -98,7 +98,7 @@ const HomePage = () => {
                 </div>
 
                 {/* Promotion Banner */}
-                <div className="rounded-2xl overflow-hidden border border-[#102590] relative">
+                <div className="rounded-2xl overflow-hidden border border-[#102590] relative mb-8">
                     <img
                         src={Banner}
                         alt="Promotion"
