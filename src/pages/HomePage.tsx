@@ -63,7 +63,9 @@ const HomePage = () => {
                             <FontAwesomeIcon icon={faCreditCard} />
                             <span className="text-[8px]">Nạp tiền</span>
                         </button>
-                        <button className="flex items-center justify-center gap-2 border border-[#102590]  text-[#102590] w-[133px] h-[36px] rounded-full">
+                        <button
+                        onClick={() => navigate('/history')}
+                        className="flex items-center justify-center gap-2 border border-[#102590]  text-[#102590] w-[133px] h-[36px] rounded-full">
                             <Clock size={16} />
                             <span className="text-[8px]">Lịch sử giao dịch</span>
                         </button>
