@@ -3,6 +3,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faLock } from "@fortawesome/free-solid-svg-icons";
 import BgLogin from "../assets/BgLogin.png";
+import { loginUser } from "../redux/apiRequest";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,7 +13,26 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const isDisabled = !phone || !password; 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  interface LoginProps {}
+
+  interface LoginState {
+    showPassword: boolean;
+    phone: string;
+    password: string;
+    isKeyboardOpen: boolean;
+  }
+
+  const handleLogin = (e:any): void => {
+    e.preventDefault();
+    const newUser ={
+      phone: phone,
+      password: password,
+    };
+    loginUser(newUser,dispatch,navigate);
+  };
   useEffect(() => {
     const handleResize = () => {
       setIsKeyboardOpen(window.innerHeight < 600);
@@ -72,9 +94,11 @@ function Login() {
             <button
               type="submit"
               className={`w-full py-2 rounded-lg transition-all duration-200 hover:shadow-inner-lg ${
-                isDisabled ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-lg" : "bg-[#102590] text-white shadow "
+                isDisabled ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-lg" : "bg-[#FFB142] text-white shadow hover:bg-[#FFC168]"
               }`}
+              
               disabled={isDisabled} 
+              onClick={handleLogin}
               
             >
               Đăng nhập

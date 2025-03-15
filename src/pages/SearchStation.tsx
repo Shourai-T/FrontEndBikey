@@ -3,8 +3,8 @@ import SearchIcon from "../assets/search-icon.png";
 import NoStation from "../assets/HistoryEmpty.jpg"
 import Location from "../assets/location-icon.png"
 import Nearme from "../assets/near-icon.png"
-import { useNavigate } from "react-router-dom";
 import SearchInput from "../components/SearchInput";
+import { useNavigate } from "react-router-dom";
 
 const stations = [
   { id: 1, name: "Trạm xe Hà Nội", location:"123 Nguyễn Huệ, quận 1, TP.HCM" },
