@@ -3,6 +3,8 @@ import SearchIcon from "../assets/search-icon.png";
 import NoStation from "../assets/HistoryEmpty.jpg"
 import Location from "../assets/location-icon.png"
 import Nearme from "../assets/near-icon.png"
+import { useNavigate } from "react-router-dom";
+import SearchInput from "../components/SearchInput";
 
 const stations = [
   { id: 1, name: "Trạm xe Hà Nội", location:"123 Nguyễn Huệ, quận 1, TP.HCM" },
@@ -14,7 +16,8 @@ const stations = [
 
 const SearchStation = () => {
   const [search, setSearch] = useState("");
-  const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(true);
+  const navigate = useNavigate()
 
   const filteredStations = stations.filter((station) =>
     station.name.toLowerCase().includes(search.toLowerCase())
@@ -33,29 +36,13 @@ const SearchStation = () => {
   return (
     <div className="relative w-full pt-8 px-8">
       {/* Ô tìm kiếm */}
-      <div className="relative w-full">
-        <input
-          type="text"
-          placeholder="Tìm trạm xe..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={handleKeyDown} // Bắt sự kiện Enter
-          className="pl-3 pr-12 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 w-full"
-        />
-        {/* Icon search */}
-        <button
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 cursor-pointer"
-          onClick={handleSearch} // Click button search
-        >
-          <img src={SearchIcon} alt="Search" />
-        </button>
-      </div>
+      <SearchInput value={search} onChange={setSearch} onSearch={handleSearch} onKeyDown={handleKeyDown} />
 
       {/* Danh sách trạm xe - Luôn hiển thị sau khi tìm kiếm */}
       {showList && (
         <div
             className={`w-full mt-2 bg-white rounded-lg ${
-            filteredStations.length > 0 ? "border-b border-gray-200 shadow-lg" : ""
+            filteredStations.length > 0 ? "border-b border-gray-200" : ""
             }`}
         >
             {filteredStations.length > 0 ? (
@@ -63,8 +50,9 @@ const SearchStation = () => {
                 {filteredStations.map((station) => (
                 <li
                     key={station.id}
-                    className="px-4 hover:bg-gray-100 cursor-pointer text-black"
+                    className=" hover:bg-gray-100 cursor-pointer text-black"
                     onClick={() => setSearch(station.name)}
+                    // onClick={() => navigate(`/station/${station.id}`)}
                 >
                     <div className="flex items-center justify-between border-b border-gray-200 border-1 py-2">
                         <div className="flex items-center gap-2">
@@ -89,11 +77,7 @@ const SearchStation = () => {
                 <img
                 src={NoStation}
                 alt="No Station"
-                className="w-full h-full mx-auto"
-                style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                }}
+                className="w-full h-full mx-auto bg-center bg-cover"  
                 />
                 <p className="text-black text-xl mt-4">Không tìm thấy trạm xe.</p>
                 <span className="text-gray-500 text-xs">Vui lòng kiểm tra tên/địa chỉ hoặc thử tìm kiếm khác.</span>

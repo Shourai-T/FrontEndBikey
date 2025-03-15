@@ -9,6 +9,10 @@ import DepositFailed from './pages/DepositFailed';
 import HistoryEmpty from './pages/HistoryEmpty';
 import History from './pages/History';
 import SearchStation from './pages/SearchStation';
+import ScanQR from './pages/ScanQR';
+import InfoQR from './pages/InfoQR';
+import StationDetail from './components/StationDetail';
+import Guide from './pages/Guide';
 
 function App() {
   return (
@@ -24,7 +28,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/" element={<Navigate to="/home" replace />}/>
-        <Route path="/search-station" element={<SearchStation/>}/>
+        <Route path="/search-station" element={<SearchStation />}/>
+        <Route path="/station/:id" element={<StationDetail />}/>
+        <Route path="/scanqr" element={<ScanQR onScan={(code: string) => console.log(code)} />}/>
+        <Route path="/info-qr" element={<InfoQR />} />
+        <Route path="/guide" element={<Guide />} />
       </Routes>
     </Router>
   );
