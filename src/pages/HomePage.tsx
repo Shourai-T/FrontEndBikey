@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { QrCode, Search, Clock } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,20 +10,32 @@ import IconBicycle from '../assets/IconBicycle.png';
 import IconOpenBook from '../assets/IconOpenBook.png';
 import IconUser from '../assets/IconUser.png';
 import Banner from '../assets/Banner.png';
+import account from '../assets/Account.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../redux/api_request/user_api';
+
 
 const HomePage = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    useEffect(() =>{
+        getUser(dispatch)
+    },[dispatch]);
+    
+    const user = useSelector((state:any) => state.user.getUser.currentUser)
+
+
     return (
         <div className='min-h-screen px-6 pt-8 relative'>
             {/* Header */}
             <header className="absolute px-6 pt-11 left-0 top-0 w-full h-[272px] bg-cover bg-center mb-4 rounded-b-[32px]" style={{ backgroundImage: `url(${BgHeader})` }}>
                 <div className='flex items-center justify-between'>
                     <img src={Logo} alt="logo" className='w-14' />
-                    <div className="w-10 h-10 rounded-full overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" alt="Profile" className="w-full h-full object-cover" />
+                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                        <img src={account} alt="Profile" className="w-full h-full object-cover" />
                     </div>
                 </div>
-                <p className="text-sm mt-3 text-white">Xin chào, <b>Nguyễn Thị Vân A</b></p>
+                <p className="text-sm mt-3 text-white">Xin chào, <b>{user?.fullName}</b></p>
                 <div className="relative mb-6 mt-4 items-center">
                     <input type="text" placeholder="Tìm kiếm trạm xe đạp" className="w-full h-9 bg-white rounded-full pb-1 px-5 pr-12 text-[#666666] border border-[#666666] placeholder-[#666666] placeholder:text-xs " />
                     <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
