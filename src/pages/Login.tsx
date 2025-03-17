@@ -3,7 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faLock } from "@fortawesome/free-solid-svg-icons";
 import BgLogin from "../assets/BgLogin.png";
-import { loginUser } from "../redux/apiRequest";
+import { loginUser } from "../redux/api_request/auth_api";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -12,26 +12,19 @@ function Login() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [error, setError] = useState("");
   const isDisabled = !phone || !password; 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  interface LoginProps {}
-
-  interface LoginState {
-    showPassword: boolean;
-    phone: string;
-    password: string;
-    isKeyboardOpen: boolean;
-  }
-
   const handleLogin = (e:any): void => {
     e.preventDefault();
+    setError("");
     const newUser ={
-      phone: phone,
+      phoneNumber: phone,
       password: password,
     };
-    loginUser(newUser,dispatch,navigate);
+    loginUser(newUser,dispatch,navigate,setError);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -44,7 +37,9 @@ function Login() {
 
   return (
     <div
-      className={`w-screen flex items-center justify-center transition-all duration-300 ${
+      id="login-form"
+      onSubmit={handleLogin}
+      className={`w-screen flex items-center justify-center transition-all duration-300 flex-col ${
         isKeyboardOpen ? "h-[100vh]" : "h-screen"
       }`}
       style={{
@@ -103,9 +98,18 @@ function Login() {
             >
               Đăng nhập
             </button>
+            {error && <p className="text-red-600 text-xs text-center">{error}</p>}
           </div>
         </form>
       </div>
+      <div className="flex gap-1 pt-[20px]">
+        <p className="text-[14px]">Chưa có tài khoản?</p>
+        <button className="font-bold text-[14px]" 
+        onClick={() =>{
+          navigate("/register")
+        }}>Đăng kí ngay</button>
+      </div>
+
     </div>
   );
 }
