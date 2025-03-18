@@ -27,7 +27,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/" element={<Navigate to="/home" replace />}/>
+        <Route path="/" element={<Navigate to="/login" replace />}/>
         <Route path="/search-station" element={<SearchStation />}/>
         <Route path="/station/:id" element={<StationDetail />}/>
         <Route path="/scanqr" element={<ScanQR onScan={(code: string) => console.log(code)} />}/>
