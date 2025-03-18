@@ -13,6 +13,9 @@ import ScanQR from './pages/ScanQR';
 import InfoQR from './pages/InfoQR';
 import StationDetail from './components/StationDetail';
 import Guide from './pages/Guide';
+import User from './pages/User';
+import EditUser from './pages/EditUser';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
   return (
@@ -33,6 +36,9 @@ function App() {
         <Route path="/scanqr" element={<ScanQR onScan={(code: string) => console.log(code)} />}/>
         <Route path="/info-qr" element={<InfoQR />} />
         <Route path="/guide" element={<Guide />} />
+        <Route path="/user" element={<User />} />
+        <Route path="/user/edit" element={<EditUser />} />
+        <Route path="/user/change-password" element={<ChangePassword />} />
       </Routes>
     </Router>
   );
