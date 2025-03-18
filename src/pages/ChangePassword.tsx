@@ -1,6 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const ChangePassword = () => {
+    const navigate = useNavigate()
+
   return (
     <div className='mt-12 px-8 min-h-screen'>
                 {/* Header user */}
@@ -24,7 +27,10 @@ const ChangePassword = () => {
     
                 {/* Action Buttons */}
                 <div className="mt-12 flex justify-center gap-7">
-                    <button className="py-2 px-4 border border-[#1a237e] text-[#1a237e] rounded-full text-[8px] font-semibold">
+                    <button 
+                    className="py-2 px-4 border border-[#1a237e] text-[#1a237e] rounded-full text-[8px] font-semibold"
+                    onClick={() => navigate('/user')}
+                    >
                         Hủy
                     </button>
                     <button className="py-2 px-4 bg-[#1a237e] text-white rounded-full text-[8px] font-semibold">
