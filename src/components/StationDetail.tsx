@@ -1,36 +1,77 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { stations } from "../data";
 import SearchInput from "../components/SearchInput";
-import IconParking from "../assets/IconParking.png"
-import IconFixBlack from "../assets/IconFixBlack.png"
 import RideStatusCard from "./RideStatusCard";
+import MapboxMap from "./MapboxMaps";
+import SearchStation from "./SearchStation";
 
 function StationDetail() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [search, setSearch] = useState("");
+    const [showSearch, setShowSearch] = useState(false);
+    const [station, setStation] = useState(() => stations.find((s) => s.id === Number(id)) || null);
+    const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
-    const station = stations.find((s) => s.id === Number(id));
+    useEffect(() => {
+        if (!station) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setUserLocation({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
+                },
+                (error) => {
+                    console.error("Lỗi lấy vị trí:", error);
+                    alert("Không thể lấy vị trí hiện tại. Vui lòng kiểm tra cài đặt định vị.");
+                },
+                { enableHighAccuracy: true }
+            );
+        }
+    }, [station]);
+
+    useEffect(() => {
+        if (id) {
+            const foundStation = stations.find((s) => s.id === Number(id));
+            if (foundStation) {
+                setStation(foundStation);
+                setSearch(foundStation.name);
+            }
+        }
+    }, [id]);
 
     return (
         <div className="relative w-[393px] h-[852px] mx-auto">
             {/* Ô tìm kiếm */}
-            <div className="absolute top-10 left-0 w-full px-4 z-10">
-                <SearchInput value={search} onChange={setSearch} onSearch={() => { }} onKeyDown={() => { }} />
+            <div className="absolute top-10 left-0 w-full px-4 z-20">
+                <SearchInput
+                    value={search}
+                    onChange={setSearch}
+                    onSearch={() => setShowSearch(true)}
+                    onKeyDown={() => setShowSearch(true)}
+                    onFocus={() => setShowSearch(true)}
+                />
             </div>
 
-            {/* Bản đồ Google Maps */}
+            {/* Hiển thị SearchStation khi nhấn vào ô tìm kiếm */}
+            {showSearch && (
+                <div className="absolute left-0 w-full h-full bg-white z-30">
+                    <SearchStation setSearch={setSearch} setShowSearch={setShowSearch} />
+                    <button className="absolute top-4 right-4 text-gray-600 text-lg" onClick={() => setShowSearch(false)}>
+                        ✕
+                    </button>
+                </div>
+            )}
+
+            {/* Bản đồ Mapbox */}
             {station ? (
-                <iframe
-                    src={`https://www.google.com/maps?q=${station.latitude},${station.longitude}&output=embed`}
-                    width="393"
-                    height="852"
-                    className="absolute top-0 left-0 w-full h-full"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                ></iframe>
+                <MapboxMap latitude={station.latitude} longitude={station.longitude} />
+            ) : userLocation ? (
+                <MapboxMap latitude={userLocation.latitude} longitude={userLocation.longitude} />
             ) : (
-                <p className="text-red-500 text-center mt-4">Không tìm thấy trạm xe.</p>
+                <p className="text-red-500 text-center mt-4">Không thể lấy vị trí.</p>
             )}
 
             {/* Component RideStatusCard */}
@@ -41,26 +82,6 @@ function StationDetail() {
                 onReturn={() => console.log("Trả xe")}
                 onReport={() => console.log("Báo xe hỏng")}
             />
-
-            {/* <div className="fixed bottom-0 left-0 right-0 bg-white w-full h-[233px] rounded-t-2xl shadow-[0px_-4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col p-8">
-                    <h3 className="text-sm font-semibold text-[#102590]">123xyx-bjfbej <span className="text-xs text-black font-normal">đang di chuyển</span></h3>
-                    <div className="flex items-start py-4 border-b broder-[#E5E5E5]">
-                        <div className="flex flex-col gap-[10px] justify-center items-center">
-                            <h2 className="font-semibold text-xs">Thời gian đã đi</h2>
-                            <p className="font-normal text-[11px]">5p12s</p>
-                        </div>
-                    </div>
-                    <div className="flex justify-center py-4 gap-7">
-                        <div className="flex flex-col items-center">
-                            <img src={IconParking} alt="" className="w-[11px] pb-1 pt-0.5" />
-                            <p className="text-[8px] font-semibold">Trả xe</p>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <img src={IconFixBlack} alt="" className="w-[18px] pb-1" />
-                            <p className="text-[8px] font-semibold">Báo xe hỏng</p>
-                        </div>
-                    </div>
-                </div> */}
         </div>
     );
 }

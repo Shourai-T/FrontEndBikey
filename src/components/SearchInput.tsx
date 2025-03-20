@@ -6,9 +6,10 @@ interface SearchInputProps {
   onChange: (value: string) => void;
   onSearch: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onFocus?: () => void;
 }
 
-const SearchInput = ({ value, onChange, onSearch, onKeyDown }: SearchInputProps) => {
+const SearchInput = ({ value, onChange, onSearch, onKeyDown, onFocus  }: SearchInputProps) => {
   return (
     <div className="relative w-full">
       <input
@@ -17,6 +18,7 @@ const SearchInput = ({ value, onChange, onSearch, onKeyDown }: SearchInputProps)
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={onKeyDown} // Bắt sự kiện Enter
+        onFocus={onFocus}
         className="pl-3 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 w-full"
       />
       {/* Icon search */}
