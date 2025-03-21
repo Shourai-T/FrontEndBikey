@@ -1,88 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
-import jsQR from "jsqr";
+import React, { useState } from "react";
+import { QrReader } from "react-qr-reader";
+import ArrowIcon from "../assets/arrow_back_ios.png";
+import Keyboard from "../assets/keyboard_alt.png";
 
 const QRScanner = ({ onScan }: { onScan: (code: string) => void }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [scanning, setScanning] = useState(false);
+  const [result, setResult] = useState("No result");
 
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-          setScanning(true);
-        }
-      } catch (error) {
-        console.error("Camera access denied:", error);
-      }
-    };
-
-    startCamera();
-
-    return () => {
-      if (videoRef.current?.srcObject) {
-        (videoRef.current.srcObject as MediaStream).getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!scanning) return;
-
-    const scanQRCode = () => {
-      if (!canvasRef.current || !videoRef.current) return;
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-      const ctx = canvas.getContext("2d");
-
-      if (ctx) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, canvas.width, canvas.height);
-        if (code) {
-          onScan(code.data);
-          setScanning(false);
-        } else {
-          requestAnimationFrame(scanQRCode);
-        }
-      }
-    };
-
-    requestAnimationFrame(scanQRCode);
-  }, [scanning]);
+  // Xử lý kết quả quét (bao gồm cả lỗi)
+  const handleResult = (result: any, error: any) => {
+    if (result) {
+      setResult(result?.text);
+      onScan(result?.text);
+      console.log("QR Code Data:", result?.text);
+    }
+    if (error) {
+      console.error("Error scanning QR code:", error);
+    }
+  };
 
   return (
-    <div className="relative w-full h-screen">
-      {/* Camera */}
-      <video ref={videoRef} className="absolute top-0 left-0 w-full h-full object-cover" />
-
-      {/* Overlay with "cut-out" for QR scanning */}
-      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-        <div
-          className="absolute inset-0 bg-black/30" // Lighter overlay
-          style={{
-            maskImage: "polygon(35% 35%, 65% 35%, 65% 65%, 35% 65%)",
-            WebkitMaskImage: "polygon(35% 35%, 65% 35%, 65% 65%, 35% 65%)",
-          }}
-        ></div>
-
-        {/* QR scanning border */}
-        <div className="relative w-64 h-64 border-4 border-yellow-500 shadow-xl"> {/* Brighter border color and shadow */}
-          {/* Corner borders */}
-          <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-white"></div>
-          <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-white"></div>
-          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-white"></div>
-          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-white"></div>
+    <div className="h-screen flex flex-col">
+      {/* Camera wrapper */}
+      <div className="flex-1 flex justify-center items-center min-h-[80vh] bg-black">
+        <div className="w-[80%] h-[50%] max-w-[400px] max-h-[500px]">
+          <QrReader
+            onResult={handleResult}
+            constraints={{ facingMode: "environment" }}
+            containerStyle={{
+              width: "100%",
+              height: "100%",
+            }}
+            videoStyle={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
         </div>
       </div>
 
-      <canvas ref={canvasRef} className="hidden" />
+      {/* Button container */}
+      <div className="h-[34vh] bg-white flex justify-evenly items-center">
+        <button className="flex items-center rounded-full border-2 border-black p-4">
+          <img src={ArrowIcon} alt="" className="w-6" />
+          Quay lại
+        </button>
+        <button className="flex items-center rounded-full border-2 border-black p-4">
+          <img src={Keyboard} alt="" className="w-6" />
+          Nhập mã xe
+        </button>
+      </div>
     </div>
   );
 };
