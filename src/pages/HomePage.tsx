@@ -32,14 +32,11 @@ const HomePage = () => {
             <header className="absolute px-6 pt-11 left-0 top-0 w-full h-[272px] bg-cover bg-center mb-4 rounded-b-[32px]" style={{ backgroundImage: `url(${BgHeader})` }}>
                 <div className='flex items-center justify-between'>
                     <img src={Logo} alt="logo" className='w-14' />
-                    <button className="w-8 h-8 rounded-full overflow-hidden">
-                        <img src={account} alt="Profile" className="w-full h-full object-cover"
-                        onClick={
-                            () => {
-                                navigate('/account')
-                            }
-                        } />
-                    </button>
+                    <div 
+                    className="w-8 h-8 rounded-full overflow-hidden"
+                    onClick={() => navigate('/account')}>
+                        <img src={account} alt="Profile" className="w-full h-full object-cover" />
+                    </div>
                 </div>
                 <p className="text-sm mt-3 text-white">Xin chào, <b>{user?.fullName}</b></p>
                 <div className="relative mb-6 mt-4 items-center" onClick={() => navigate('/search-station')}>

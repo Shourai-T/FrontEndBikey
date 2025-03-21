@@ -36,7 +36,7 @@ function App() {
         <Route path="/info-qr" element={<InfoQR />} />
         <Route path="/guide" element={<Guide />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/account" element={<EditAccount />} />
+        <Route path="/edit-account" element={<EditAccount />} />
       </Routes>
     </Router>
   );
