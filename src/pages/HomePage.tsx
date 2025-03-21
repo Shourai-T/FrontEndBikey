@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { QrCode, Search, Clock } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +22,7 @@ const HomePage = () => {
         getUser(dispatch)
     },[dispatch]);
     
+    
     const user = useSelector((state:any) => state.user.getUser.currentUser)
 
 
@@ -33,12 +34,12 @@ const HomePage = () => {
                     <img src={Logo} alt="logo" className='w-14' />
                     <div 
                     className="w-8 h-8 rounded-full overflow-hidden"
-                    onClick={() => navigate('/user')}>
+                    onClick={() => navigate('/account')}>
                         <img src={account} alt="Profile" className="w-full h-full object-cover" />
                     </div>
                 </div>
                 <p className="text-sm mt-3 text-white">Xin chào, <b>{user?.fullName}</b></p>
-                <div className="relative mb-6 mt-4 items-center">
+                <div className="relative mb-6 mt-4 items-center" onClick={() => navigate('/search-station')}>
                     <input type="text" placeholder="Tìm kiếm trạm xe đạp" className="w-full h-9 bg-white rounded-full pb-1 px-5 pr-12 text-[#666666] border border-[#666666] placeholder-[#666666] placeholder:text-xs " />
                     <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
                 </div>
@@ -49,11 +50,11 @@ const HomePage = () => {
                     <div className="flex justify-between items-center text-black">
                         <div>
                             <p className="text-gray-600 text-sm mb-1">Số dư hiện tại</p>
-                            <h2 className="text-2xl font-bold">123.000 VND</h2>
+                            <h2 className="text-3xl font-bold">{user?.wallet.balance} VND</h2>
                         </div>
-                        <div className='flex flex-col justify-center items-center gap-1'>
-                            <QrCode className="text-[#102590]" size={24} />
-                            <p className='text-[8px] text-[#102590]'>Quét mã thuê xe</p>
+                        <div className='flex flex-col justify-center items-center gap-2'>
+                            <QrCode className="text-[#102590]" size={30} />
+                            <p className='text-[8px] text-[#102590] text-xs'>Quét mã thuê xe</p>
                         </div>
                     </div>
                     <div className="flex justify-between mt-8">
