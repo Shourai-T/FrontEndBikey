@@ -6,6 +6,7 @@ import check from '../assets/check.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import PreviousIcon from '../assets/previous-icon.png'
 
 const Deposit = () => {
   const navigate = useNavigate()
@@ -32,9 +33,12 @@ const Deposit = () => {
     <div className="flex flex-col h-screen bg-white p-6 mt-2 justify-between">
       <div className='flex flex-col'>
         {/* Header */}
-        <div className="flex justify-end mb-4"
-          onClick={() => setShowRules(true)}
-        >
+        <div className="flex justify-between items-center mb-4"
+          onClick={() => setShowRules(true)}>
+          <img src={PreviousIcon} className='w-6 h-6'
+          onClick={
+            () => navigate(-1)
+          }></img>
           <h2 className="text-lg font-medium">Quy định</h2>
         </div>
 

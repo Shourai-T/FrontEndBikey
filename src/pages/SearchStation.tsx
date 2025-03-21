@@ -1,25 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIcon from "../assets/search-icon.png";
 import NoStation from "../assets/HistoryEmpty.jpg"
 import Location from "../assets/location-icon.png"
 import Nearme from "../assets/near-icon.png"
 import SearchInput from "../components/SearchInput";
 import { useNavigate } from "react-router-dom";
+import { getAllStation } from "../redux/api_request/station_api";
+import { useDispatch, useSelector } from "react-redux";
 
-const stations = [
-  { id: 1, name: "Trạm xe Hà Nội", location:"123 Nguyễn Huệ, quận 1, TP.HCM" },
-  { id: 2, name: "Trạm xe Sài Gòn",location:"123 Nguyễn Huệ, quận 1, TP.HCM" },
-  { id: 3, name: "Trạm xe Đà Nẵng" ,location:"123 Nguyễn Huệ, quận 1, TP.HCM"},
-  { id: 4, name: "Trạm xe Hải Phòng" ,location:"123 Nguyễn Huệ, quận 1, TP.HCM"},
-  { id: 5, name: "Trạm xe Cần Thơ" ,location:"123 Nguyễn Huệ, quận 1, TP.HCM"},
-];
 
 const SearchStation = () => {
   const [search, setSearch] = useState("");
   const [showList, setShowList] = useState(true);
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getAllStation(dispatch)
+},[dispatch])
 
-  const filteredStations = stations.filter((station) =>
+  const stationList = useSelector((state: any) => state.station.getAllStation.data);
+  const station = stationList?.map((station:any) => ({
+    key:station.id,
+    id: station.id,
+    name: station.name,
+    address: station.address,
+    location: station.location,
+  }));
+
+  const filteredStations = station?.filter((station:any) =>
     station.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -47,7 +55,7 @@ const SearchStation = () => {
         >
             {filteredStations.length > 0 ? (
             <ul>
-                {filteredStations.map((station) => (
+                {filteredStations.map((station:any) => (
                 <li
                     key={station.id}
                     className=" hover:bg-gray-100 cursor-pointer text-black"
