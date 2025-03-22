@@ -7,9 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import PreviousIcon from '../assets/previous-icon.png'
+import { createTransactionWithZalopay } from '../redux/api_request/transaction_api';
+import { useDispatch } from 'react-redux';
 
 const Deposit = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [amount, setAmount] = useState<number>(0);
   const predefinedAmounts = [20000, 50000, 100000, 200000];
   const [showRules, setShowRules] = useState(false);
@@ -25,7 +28,7 @@ const Deposit = () => {
 
   const handleSubmit = () => {
     if (amount >= 20000) {
-      navigate('/deposit-success');
+      createTransactionWithZalopay(amount,dispatch);
     }
   };
 

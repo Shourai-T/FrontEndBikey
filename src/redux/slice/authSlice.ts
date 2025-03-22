@@ -35,7 +35,7 @@ const authSlice = createSlice({
             state.login.error = false;
         },
         loginSuccess: (state, actions) => {
-            state.login.currentUser = actions.payload;
+            state.login.currentUser = actions.payload.result;
             state.login.isFetching = false;
             state.login.error = false;
         },
