@@ -2,9 +2,11 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const EditUser = () => {
     const navigate =useNavigate()
+    const dispatch = useDispatch()
     return (
         <div className='mt-12 px-8 min-h-screen'>
             {/* Header user */}

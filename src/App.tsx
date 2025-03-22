@@ -14,7 +14,7 @@ import InfoQR from './pages/InfoQR';
 import StationDetail from './components/StationDetail';
 import Guide from './pages/Guide';
 import Account from './pages/Account';
-import EditAccount from './pages/EditAccount';
+import EditAccount from './pages/EditUser';
 
 function App() {
   return (

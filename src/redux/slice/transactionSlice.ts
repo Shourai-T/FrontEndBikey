@@ -14,6 +14,7 @@ const transactionSlice = createSlice({
             isFetching: false,
             error: false
         },
+        
     },
     reducers: {
         getAllTransactionStart(state) {
