@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Bike {
-    currentStation: string;
-}
-
 const bikeState = createSlice({
     name: 'bike',
     initialState: {
@@ -11,6 +7,11 @@ const bikeState = createSlice({
             data:null,
             isFetching: false,
             error: false
+        },
+        bikeDetail:{
+            data:null,
+            isFetching:false,
+            error:false
         }
     },
     reducers: {
@@ -26,10 +27,25 @@ const bikeState = createSlice({
         countBikeEachStationFailure(state) {
             state.countBikeEachStation.error = true;
             state.countBikeEachStation.isFetching = false;
+        },
+        getBikeByQRCodeStart(state) {
+            state.bikeDetail.isFetching = true;
+            state.bikeDetail.error = false;
+        },
+        getBikeByQRCodeSuccess(state, action) {
+            state.bikeDetail.data = action.payload.result;
+            state.bikeDetail.isFetching = false;
+            state.bikeDetail.error = false;
+        },
+        getBikeByQRCodeFailure(state) {
+            state.bikeDetail.error = true;
+            state.bikeDetail.isFetching = false;
         }
     }
 })
 
 export const { countBikeEachStationStart, countBikeEachStationFailure, countBikeEachStationSuccess } = bikeState.actions;
+
+export const { getBikeByQRCodeStart, getBikeByQRCodeSuccess, getBikeByQRCodeFailure } = bikeState.actions;
 
 export default bikeState.reducer;

@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import ArrowIcon from "../assets/arrow_back_ios.png";
 import Keyboard from "../assets/keyboard_alt.png";
+import { useNavigate } from "react-router-dom";
 
-const QRScanner = ({ onScan }: { onScan: (code: string) => void }) => {
-  const [result, setResult] = useState("No result");
-
+const QRScanner = () => {
+  const navigate = useNavigate();
   // Xử lý kết quả quét (bao gồm cả lỗi)
   const handleResult = (result: any, error: any) => {
     if (result) {
-      setResult(result?.text);
-      onScan(result?.text);
+      navigate(`/info-qr/${result?.text}`);
       console.log("QR Code Data:", result?.text);
     }
     if (error) {
