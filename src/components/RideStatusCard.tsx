@@ -36,7 +36,7 @@ const RideStatusCard: React.FC<RideStatusCardProps> = ({ rideId, status, duratio
             </h3>
 
             {/* Thời gian di chuyển */}
-            <div className="flex items-start py-4 border-b border-[#E5E5E5]">
+            <div className="flex items-start justify-center py-4 border-b border-[#E5E5E5]">
                 <div className="flex flex-col gap-[10px] justify-center items-center">
                     <h2 className="font-semibold text-xs">Thời gian đã đi</h2>
                     <p className="font-normal text-[11px]">{duration}</p>
@@ -59,7 +59,7 @@ const RideStatusCard: React.FC<RideStatusCardProps> = ({ rideId, status, duratio
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onConfirm={() => alert("Đã xác nhận")}
+                onConfirm={() => onReturn()}
                 message={modalContent.message}
                 actionType={modalContent.type}
             />

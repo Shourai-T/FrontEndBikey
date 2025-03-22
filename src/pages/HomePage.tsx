@@ -52,7 +52,7 @@ const HomePage = () => {
                             <p className="text-gray-600 text-sm mb-1">Số dư hiện tại</p>
                             <h2 className="text-3xl font-bold">{user?.wallet.balance} VND</h2>
                         </div>
-                        <div className='flex flex-col justify-center items-center gap-2'>
+                        <div className='flex flex-col justify-center items-center gap-2' onClick={() => navigate('/scanqr')}>
                             <QrCode className="text-[#102590]" size={30} />
                             <p className='text-[8px] text-[#102590] text-xs'>Quét mã thuê xe</p>
                         </div>
@@ -72,13 +72,13 @@ const HomePage = () => {
                 <div>
                     <h3 className="text-lg font-semibold mb-4">Tiện ích</h3>
                     <div className="grid grid-cols-3 gap-4 mb-6">
-                        {[{ img: IconBicycle, label: "Trạm xe\ngần đây" }, { img: IconOpenBook, label: "Hướng dẫn\nsử dụng" }, { img: IconUser, label: "Hỗ trợ\nngười dùng" }].map((item, index) => (
-                            <div key={index} className="flex flex-col items-center">
+                        {[{ img: IconBicycle, label: "Trạm xe\ngần đây", route:"/station" }, { img: IconOpenBook, label: "Hướng dẫn\nsử dụng", route:"/guide" }, { img: IconUser, label: "Hỗ trợ\nngười dùng", route:"/guide " }].map((item, index) => (
+                            <div key={index} className="flex flex-col items-center" onClick={() => navigate(item.route)}>
                                 <div className="bg-white/10 rounded-xl mb-1">
                                     <img src={item.img} alt="Icon" className='w-8' />
                                 </div>
                                 <span className="text-[8px] text-center whitespace-pre-wrap">{item.label}</span>
-                            </div>
+                            </div> 
                         ))}
                     </div>
                 </div>
