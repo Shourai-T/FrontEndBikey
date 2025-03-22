@@ -1,17 +1,44 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
+import React, { useRef, useState, useEffect } from "react";
+import { auth } from "../../firebase";
+import { sendOTP, verifyOtp } from "../redux/api_request/auth_api";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
-interface OTPInputProps {
-  onComplete?: (otp: string) => void;
-}
 
-const OTP: React.FC<OTPInputProps> = ({ onComplete }) => {
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+const OTP: React.FC= () => {
+  const { phoneNumber } = useParams();
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+  const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [confirmationResult, setConfirmationResult] =
+    useState<ConfirmationResult | null>(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] =
+    useState<RecaptchaVerifier | null>(null);
+
+  useEffect(() => {
+    if (recaptchaVerifier && phoneNumber) {
+      sendOTP(recaptchaVerifier, phoneNumber, setConfirmationResult, dispatch);
+    }
+  }, [recaptchaVerifier, phoneNumber]);
 
   useEffect(() => {
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
+  }, []);
+
+  useEffect(() => {
+    if (!recaptchaVerifier) {
+      const verifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "invisible",
+      });
+      setRecaptchaVerifier(verifier);
+    }
+    return () => {
+      recaptchaVerifier?.clear();
+    };
   }, []);
 
   const handleChange = (index: number, value: string) => {
@@ -24,16 +51,21 @@ const OTP: React.FC<OTPInputProps> = ({ onComplete }) => {
     }
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handleVerify = () => {
-    const otpString = otp.join('');
-    if (otpString.length === 6) {
-      onComplete?.(otpString);
+    const otpString = otp.join("");
+    if (otpString.length === 6 && confirmationResult) {
+      verifyOtp(otpString, dispatch, navigation, confirmationResult);
+    } else {
+      console.log("ConfirmationResult chưa được thiết lập!");
     }
   };
 
@@ -54,7 +86,11 @@ const OTP: React.FC<OTPInputProps> = ({ onComplete }) => {
           />
         ))}
       </div>
-      <button onClick={handleVerify} className="px-8 py-3 bg-blue-600 text-white rounded-lg">
+      <div id="recaptcha-container"></div>
+      <button
+        onClick={handleVerify}
+        className="px-8 py-3 bg-blue-600 text-white rounded-lg"
+      >
         Xác thực
       </button>
     </div>
