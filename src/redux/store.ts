@@ -5,6 +5,7 @@ import userReducer from './slice/userSlice';
 import bikeReaduce from './slice/bikeSlice';
 import transactionReducer from './slice/transactionSlice';
 import rentalReducer from './slice/rentalSlice';
+import bikeReport from './slice/bikeReportSlice';
 export default configureStore({
     reducer: {
         auth: authReducer,
@@ -12,7 +13,8 @@ export default configureStore({
         station: stationReducer,
         bike: bikeReaduce,
         transaction: transactionReducer,
-        rental: rentalReducer
+        rental: rentalReducer,
+        bikeReport: bikeReport
     },
 })
 
