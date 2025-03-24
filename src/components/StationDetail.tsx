@@ -22,7 +22,9 @@ function StationDetail() {
     () => stations.find((s) => s.id === Number(id)) || null
   );
   const rental = useSelector((state: any) => state.rental.getRentalDetail.data);
-
+  const loadingRental = useSelector(
+    (state: any) => state.rental.getRentalDetail.isFetching
+  );
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;

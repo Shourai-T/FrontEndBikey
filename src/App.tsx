@@ -19,6 +19,7 @@ import Guide from "./pages/Guide";
 import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import QRScannerPage from "./pages/ScanQR";
+import DepositResult from "./pages/DepositResult";
 
 function App() {
   return (
@@ -26,9 +27,8 @@ function App() {
       <Routes>
         <Route path="/history" element={<History />} />
         <Route path="/history-empty" element={<HistoryEmpty />} />
-        <Route path="/deposit-failed" element={<DepositFailed />} />
-        <Route path="/deposit-success" element={<DepositSuccess />} />
         <Route path="/deposit" element={<Deposit />} />
+        <Route path="/deposit-result" element={<DepositResult />} />
         <Route path="/register/otp" element={<OTP />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
