@@ -10,6 +10,7 @@ import {
   checkHaveRentalOnGoing,
   returnRental,
 } from "../redux/api_request/rental_api";
+import { createBikeReport } from "../redux/api_request/bikeReport_api";
 
 function StationDetail() {
   const { id } = useParams();
@@ -22,7 +23,9 @@ function StationDetail() {
     () => stations.find((s) => s.id === Number(id)) || null
   );
   const rental = useSelector((state: any) => state.rental.getRentalDetail.data);
-
+  const loadingRental = useSelector(
+    (state: any) => state.rental.getRentalDetail.isFetching
+  );
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -92,10 +95,16 @@ function StationDetail() {
       navigate
     );
   };
-  console.log("StationDetail", userLocation);
   if (!station && !userLocation) {
     return <p>Đang tải...</p>;
   }
+  const createReport = async () => {
+    const data = {
+      bike: rental.bikeId._id,
+      location: [userLocation!.longitude, userLocation!.latitude],
+    };
+    createBikeReport(data, dispatch);
+  };
   return (
     <div className="relative w-[393px] h-[852px] mx-auto">
       {/* Ô tìm kiếm */}
@@ -141,7 +150,7 @@ function StationDetail() {
           status="đang được sử dụng"
           duration={`${duration} phút`}
           onReturn={returnBike}
-          onReport={() => console.log("Báo xe hỏng")}
+          onReport={createReport}
         />
       )}
     </div>
