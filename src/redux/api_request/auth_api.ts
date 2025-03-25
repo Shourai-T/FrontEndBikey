@@ -1,7 +1,7 @@
 
 import { loginStart, loginSuccess, loginFailure, registerFailure, registerSuccess, registerStart, logoutSuccess, logoutFailure, verifyOtpStart, verifyOtpSuccess, verifyOtpFailure, sendOTPStart, sendOTPSuccess, sendOTPFailure } from '../slice/authSlice'
 import axiosInstance from '../../axios/axios.interceptor';
-import { getErrorMessage } from '../../utils/errorMessage';
+import { getErrorMessage } from '../../data/errorMessage';
 import { useEffect, useState } from 'react';
 import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '../../../firebase'
@@ -36,7 +36,7 @@ export const registerUser = async (user: any, dispatch: any, navigate: any, setE
     dispatch(registerFailure());
   }
 }
-export const logout = async ( dispatch: any, navigate: any) => {
+export const logout = async (dispatch: any, navigate: any) => {
   try {
     await axiosInstance.post('/v1/auth/logout')
     dispatch(logoutSuccess());

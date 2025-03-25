@@ -15,8 +15,10 @@ function History() {
 
   const transactions = useSelector((state: any) => state.transaction.getAllTransaction.data) ;
   const user = useSelector((state: any) => state.user.getUser.currentUser);
+  const loadingTransaction = useSelector((state: any) => state.transaction.getAllTransaction.isFetching);
+  const loadingUser = useSelector((state: any) => state.user.getUser.isFetching);
   
-
+  if(loadingTransaction || loadingUser) return <p>Loading...</p>;
   return (
     <div className="mt-12 mx-auto bg-white">
       {/* Balance Card */}
