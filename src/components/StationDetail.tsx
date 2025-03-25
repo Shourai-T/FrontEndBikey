@@ -132,7 +132,7 @@ function StationDetail() {
       )}
 
       {/* Bản đồ Mapbox */}
-      {station ? (
+      {/* {station ? (
         <MapboxMap latitude={station.latitude} longitude={station.longitude} />
       ) : userLocation ? (
         <MapboxMap
@@ -141,7 +141,9 @@ function StationDetail() {
         />
       ) : (
         <p className="text-red-500 text-center mt-4">Không thể lấy vị trí.</p>
-      )}
+      )} */}
+
+    <MapboxMap latitude={station?.latitude} longitude={station?.longitude} />
 
       {/* Component RideStatusCard */}
       {rental && (
