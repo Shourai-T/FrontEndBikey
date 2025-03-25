@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import IconParking from "../assets/IconParking.png";
 import IconFixBlack from "../assets/IconFixBlack.png";
 import Modal from "./Modal";
+import UserDot from "../assets/UserLocation.png"
 
 interface RideStatusCardProps {
     rideId: string;
@@ -9,9 +10,10 @@ interface RideStatusCardProps {
     duration: string;
     onReturn: () => void;
     onReport: () => void;
+
 }
 
-const RideStatusCard: React.FC<RideStatusCardProps> = ({ rideId, status, duration, onReturn, onReport }) => {
+const RideStatusCard: React.FC<RideStatusCardProps> = ({ rideId, status, duration, onReturn, onReport,}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState<{ title: string; message: string; type: "parking" | "error" }>({
         title: "",
@@ -30,6 +32,12 @@ const RideStatusCard: React.FC<RideStatusCardProps> = ({ rideId, status, duratio
 
     return (
         <div className="fixed z-10 bottom-0 left-0 right-0 bg-white w-full h-[233px] rounded-t-2xl shadow-[0px_-4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col p-8">
+            <div className="absolute p-2 -top-1/3 right-6 bg-white rounded-full shadow-lg"
+
+            >
+                <img src={UserDot} alt="User-dot" className="w-8"/>
+            </div>
+            
             {/* Tiêu đề */}
             <h3 className="text-sm font-semibold text-[#102590]">
                 {rideId} <span className="text-xs text-black font-normal">{status}</span>

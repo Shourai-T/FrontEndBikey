@@ -13,6 +13,8 @@ function StationDetail() {
     const [showSearch, setShowSearch] = useState(false);
     const [station, setStation] = useState(() => stations.find((s) => s.id === Number(id)) || null);
     const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+    const [flyToUserLocation, setFlyToUserLocation] = useState<() => void>(() => () => {});
+
 
     useEffect(() => {
         if (!station) {
@@ -66,13 +68,16 @@ function StationDetail() {
             )}
 
             {/* Bản đồ Mapbox */}
-            {station ? (
+            {/* {station ? (
                 <MapboxMap latitude={station.latitude} longitude={station.longitude} />
             ) : userLocation ? (
                 <MapboxMap latitude={userLocation.latitude} longitude={userLocation.longitude} />
             ) : (
                 <p className="text-red-500 text-center mt-4">Không thể lấy vị trí.</p>
-            )}
+            )} */}
+
+            {/* Bản đồ Mapbox - Hiển thị tất cả các trạm */}
+            <MapboxMap latitude={station?.latitude} longitude={station?.longitude}/>
 
             {/* Component RideStatusCard */}
             <RideStatusCard
@@ -80,7 +85,7 @@ function StationDetail() {
                 status="đang di chuyển"
                 duration="5p12s"
                 onReturn={() => console.log("Trả xe")}
-                onReport={() => console.log("Báo xe hỏng")}
+                onReport={() => console.log("Báo xe hỏng")} 
             />
         </div>
     );
