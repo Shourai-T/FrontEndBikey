@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -9,8 +9,6 @@ import Register from "./pages/Register";
 import OTP from "./pages/OTP";
 import HomePage from "./pages/HomePage";
 import Deposit from "./pages/Deposit";
-import DepositSuccess from "./pages/DepositSuccess";
-import DepositFailed from "./pages/DepositFailed";
 import HistoryEmpty from "./pages/HistoryEmpty";
 import History from "./pages/History";
 import InfoQR from "./pages/InfoQR";
@@ -20,6 +18,7 @@ import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import QRScannerPage from "./pages/ScanQR";
 import DepositResult from "./pages/DepositResult";
+import SearchStation from "./pages/SearchStation";
 
 function App() {
   return (
@@ -41,6 +40,7 @@ function App() {
         <Route path="/guide" element={<Guide />} />
         <Route path="/account" element={<Account />} />
         <Route path="/edit-account" element={<EditAccount />} />
+        <Route path="/search-station" element={<SearchStation />} />
       </Routes>
     </Router>
   );

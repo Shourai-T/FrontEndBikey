@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SearchIcon from "../assets/search-icon.png";
 import NoStation from "../assets/HistoryEmpty.jpg"
 import Location from "../assets/location-icon.png"
 import Nearme from "../assets/near-icon.png"
@@ -20,8 +19,8 @@ const SearchStation = () => {
 
   const stationList = useSelector((state: any) => state.station.getAllStation.data);
   const station = stationList?.map((station:any) => ({
-    key:station.id,
-    id: station.id,
+    key:station._id,
+    id: station._id,
     name: station.name,
     address: station.address,
     location: station.location,
@@ -59,7 +58,7 @@ const SearchStation = () => {
                 <li
                     key={station.id}
                     className=" hover:bg-gray-100 cursor-pointer text-black"
-                    onClick={() => setSearch(station.name)}
+                    onClick={() => navigate(`/station/${station.id}`)}
                     // onClick={() => navigate(`/station/${station.id}`)}
                 >
                     <div className="flex items-center justify-between border-b border-gray-200 border-1 py-2">
@@ -69,7 +68,7 @@ const SearchStation = () => {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <p className="">{station.name}</p>
-                                <span className="text-xs text-gray-500">{station.location}</span>
+                                <span className="text-xs text-gray-500">{station.address}</span>
                             </div>
                         </div>
                         <div className="items-center">

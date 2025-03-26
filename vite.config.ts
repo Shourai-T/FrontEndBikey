@@ -7,4 +7,8 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  server: {
+    host: true, // Cho phép truy cập từ thiết bị khác
+    strictPort: true, // Đảm bảo không bị đổi port
+  }
 });
