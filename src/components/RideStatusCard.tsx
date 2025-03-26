@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import IconParking from "../assets/IconParking.png";
 import IconFixBlack from "../assets/IconFixBlack.png";
 import Modal from "./Modal";
+import UserDot from "../assets/UserLocation.png"
 
 interface RideStatusCardProps {
   rideId: string;
