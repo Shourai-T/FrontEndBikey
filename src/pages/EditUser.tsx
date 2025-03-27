@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../redux/api_request/user_api";
+import { getUser, updateUser } from "../redux/api_request/user_api";
 import PreviousIcon from '../assets/previous-icon.png'
+import { updateUserSuccess } from "../redux/slice/userSlice";
 
 const EditUser = () => {
     const [birthday, setBirthday] = useState("");
@@ -28,8 +29,24 @@ const EditUser = () => {
         }
     }, [user]);
 
+    const handleEdit = async () => {
+        const updatedUser = {
+            dateOfBirth: birthday,
+            gender: gender
+        };
+    
+        try {
+            await updateUser(dispatch, updatedUser); // Gửi dữ liệu lên server
+            navigate("/account");
+        } catch (error) {
+            console.error("Lỗi khi cập nhật user:", error);
+        }
+    };
+    
+    
+
     return (
-        <div className="mt-4 px-8 min-h-screen items-center gap-12">
+        <div className="mt-4 px-8 min-h-screen items-center gap-8">
             {/* Header */}
             <div className="flex items-center gap-2">
                 <img src={PreviousIcon} alt="Previous Icon" className="w-[20px] h-[20px] cursor-pointer" onClick={() => navigate(-1)} />
@@ -81,16 +98,14 @@ const EditUser = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-12 flex justify-center gap-7">
-                <button
-                    className="py-2 px-4 border border-[#1a237e] text-[#1a237e] rounded-full text-[8px] font-semibold"
-                    onClick={() => navigate("/user")}
-                >
-                    Hủy
-                </button>
-                <button className="py-2 px-4 bg-[#1a237e] text-white rounded-full text-[8px] font-semibold">
-                    Chỉnh sửa
-                </button>
+            <div className='flex justify-between mt-8 px-12'>
+                <button className='border border-[#102590] text-[#102590] text-xs h-[40px] py-2 rounded-full py-1 px-5'
+                onClick={
+                    () => {navigate('/account')}
+                }>Hủy</button>
+                <button className='border border-[#102590] bg-[#102590] text-white text-xs h-[40px] py-2 rounded-full py-1 px-3'
+                onClick={handleEdit}
+                >Chỉnh sửa</button>
             </div>
         </div>
     );

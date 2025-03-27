@@ -15,6 +15,7 @@ import HistoryEmpty from "./pages/HistoryEmpty";
 import History from "./pages/History";
 import InfoQR from "./pages/InfoQR";
 import StationDetail from "./components/StationDetail";
+import SearchStation from './pages/SearchStation'
 import Guide from "./pages/Guide";
 import Account from "./pages/Account";
 import QRScannerPage from "./pages/ScanQR";

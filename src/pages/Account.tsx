@@ -34,7 +34,7 @@ function Account (){
         <div className="width-screen flex flex-col gap-8 p-8 ">
             <div className="flex items-center gap-2">
                 <img src ={PreviousIcon}
-                className='w-6' onClick={() => navigate(-1)}></img>
+                className='w-6' onClick={() => navigate('/home')}></img>
                 <img src={AccountIcon} className='w-7 h-7'></img>
                 <p className='text-xl font-semibold'>{user?.fullName}</p>
             </div>
