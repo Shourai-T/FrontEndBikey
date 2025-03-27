@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { stations } from "../data";
 import SearchInput from "../components/SearchInput";
 import RideStatusCard from "./RideStatusCard";
 import MapboxMap from "./MapboxMaps";
@@ -11,6 +10,7 @@ import {
   returnRental,
 } from "../redux/api_request/rental_api";
 import { createBikeReport } from "../redux/api_request/bikeReport_api";
+import { getListStationsSort } from "../redux/api_request/station_api";
 
 function StationDetail() {
   const { id } = useParams();
@@ -19,24 +19,24 @@ function StationDetail() {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [station, setStation] = useState(
-    () => stations.find((s) => s.id === Number(id)) || null
-  );
+
   const rental = useSelector((state: any) => state.rental.getRentalDetail.data);
   const loadingRental = useSelector(
     (state: any) => state.rental.getRentalDetail.isFetching
   );
+  const listStations = useSelector(
+    (state: any) => state.station.getAllStation.data
+  );
+  const [station, setStation] = useState(() =>
+    listStations ? listStations.find((s: any) => s._id === id) : null
+  );
+
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
 
   useEffect(() => {
-    checkHaveRentalOnGoing(dispatch);
-  }, []);
-
-  useEffect(() => {
-    if (!station) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserLocation({
@@ -52,8 +52,19 @@ function StationDetail() {
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 } // timeout 10s, cache 5s
       );
+  }, []);
+
+  useEffect(() => {
+    checkHaveRentalOnGoing(dispatch);
+    if (userLocation) {
+      getListStationsSort(
+        userLocation.latitude,
+        userLocation.longitude,
+        dispatch
+      );
     }
-  }, [station]);
+  }, [userLocation]);
+
 
   useEffect(() => {
     if (rental) {
@@ -73,14 +84,14 @@ function StationDetail() {
   }, [rental]);
 
   useEffect(() => {
-    if (id) {
-      const foundStation = stations.find((s) => s.id === Number(id));
+    if (id && Array.isArray(listStations)) {
+      const foundStation = listStations.find((s: any) => s._id === id);
       if (foundStation) {
         setStation(foundStation);
         setSearch(foundStation.name);
       }
     }
-  }, [id]);
+  }, [id, listStations]);
 
   const returnBike = () => {
     if (!userLocation) {
@@ -95,7 +106,8 @@ function StationDetail() {
       navigate
     );
   };
-  if (!station && !userLocation) {
+
+  if (!userLocation || listStations === null || loadingRental) {
     return <p>Đang tải...</p>;
   }
   const createReport = async () => {
@@ -105,6 +117,7 @@ function StationDetail() {
     };
     createBikeReport(data, dispatch);
   };
+
   return (
     <div className="relative w-[393px] h-[852px] mx-auto">
       {/* Ô tìm kiếm */}
@@ -121,7 +134,11 @@ function StationDetail() {
       {/* Hiển thị SearchStation khi nhấn vào ô tìm kiếm */}
       {showSearch && (
         <div className="absolute left-0 w-full h-full bg-white z-30">
-          <SearchStation setSearch={setSearch} setShowSearch={setShowSearch} />
+          <SearchStation
+            setSearch={setSearch}
+            setShowSearch={setShowSearch}
+            stations={listStations}
+          />
           <button
             className="absolute top-4 right-4 text-gray-600 text-lg"
             onClick={() => setShowSearch(false)}
@@ -143,7 +160,11 @@ function StationDetail() {
         <p className="text-red-500 text-center mt-4">Không thể lấy vị trí.</p>
       )} */}
 
-    <MapboxMap latitude={station?.latitude} longitude={station?.longitude} />
+      <MapboxMap
+        latitude={station?.location[1]}
+        longitude={station?.location[0]}
+        stations={listStations}
+      />
 
       {/* Component RideStatusCard */}
       {rental && (

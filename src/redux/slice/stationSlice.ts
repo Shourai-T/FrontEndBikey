@@ -1,14 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Station {
-    id: string;
-    name: string;
-    location: string;
-}
 
 interface StationState {
     getAllStation: {
-        data: Station[];
+        data: any;
         isFetching: boolean;
         error: boolean;
     };
@@ -16,7 +11,7 @@ interface StationState {
 
 const initialState: StationState = {
     getAllStation: {
-        data: [], 
+        data: null, 
         isFetching: false,
         error: false
     }
@@ -30,8 +25,8 @@ const stationSlice = createSlice({
             state.getAllStation.isFetching = true;
             state.getAllStation.error = false;
         },
-        getAllStationSuccess(state, action: PayloadAction<{ result: { data: Station[] } }>) {
-            state.getAllStation.data = action.payload.result.data;
+        getAllStationSuccess(state, action: PayloadAction<{ result: any }>) {
+            state.getAllStation.data = action.payload.result.data ? action.payload.result.data : action.payload.result;
             state.getAllStation.isFetching = false;
             state.getAllStation.error = false;
         },

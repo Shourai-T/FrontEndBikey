@@ -10,7 +10,7 @@ import IconBicycle from "../assets/IconBicycle.png";
 import IconOpenBook from "../assets/IconOpenBook.png";
 import IconUser from "../assets/IconUser.png";
 import Banner from "../assets/Banner.png";
-import account from "../assets/Account.png";
+import account from "../assets/account.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../redux/api_request/user_api";
 
@@ -52,7 +52,7 @@ const HomePage = () => {
         </p>
         <div
           className="relative mb-6 mt-4 items-center"
-          onClick={() => navigate("/station")}
+          onClick={() => navigate("/search-station")}
         >
           <input
             type="text"

@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { stations } from "../data";
 import SearchInput from "./SearchInput";
 import Location from "../assets/location-icon.png";
 import Nearme from "../assets/near-icon.png";
 import NoStation from "../assets/HistoryEmpty.jpg";
 import { useNavigate } from "react-router-dom";
 
-const SearchStation = ({ setSearch, setShowSearch }: { setSearch: (value: string) => void; setShowSearch: (value: boolean) => void }) => {
+const SearchStation = ({ setSearch, setShowSearch ,stations}: { setSearch: (value: string) => void; setShowSearch: (value: boolean) => void,stations:any[] }) => {
   const [search, setLocalSearch] = useState("");
 
   const filteredStations = stations.filter((station) =>
@@ -23,7 +22,8 @@ const SearchStation = ({ setSearch, setShowSearch }: { setSearch: (value: string
   const handleSearch = () => {
     if (filteredStations.length > 0) {
       const bestMatch = filteredStations[0]; // Chọn trạm phù hợp nhất
-      handleSelectStation(bestMatch.id, bestMatch.name);
+      console.log("bestMatch", bestMatch);
+      handleSelectStation(bestMatch._id, bestMatch.name);
     }
   };
 
@@ -41,7 +41,7 @@ const SearchStation = ({ setSearch, setShowSearch }: { setSearch: (value: string
         {filteredStations.length > 0 ? (
           <ul>
             {filteredStations.map((station) => (
-              <li key={station.id} className="hover:bg-gray-100 cursor-pointer text-black" onClick={() => handleSelectStation(station.id, station.name)}>
+              <li key={station._id} className="hover:bg-gray-100 cursor-pointer text-black" onClick={() => handleSelectStation(station._id, station.name)}>
                 <div className="flex items-center justify-between border-b border-gray-200 py-2">
                   <div className="flex items-center gap-2">
                     <div className="rounded-full bg-[#102590] w-fit p-1 h-fit">
@@ -49,7 +49,7 @@ const SearchStation = ({ setSearch, setShowSearch }: { setSearch: (value: string
                     </div>
                     <div className="flex flex-col gap-2">
                       <p className="">{station.name}</p>
-                      <span className="text-xs text-gray-500">{station.location}</span>
+                      <span className="text-xs text-gray-500">{station.address}</span>
                     </div>
                   </div>
                   <div className="items-center">
