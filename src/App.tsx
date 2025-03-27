@@ -15,8 +15,8 @@ import InfoQR from "./pages/InfoQR";
 import StationDetail from "./components/StationDetail";
 import Guide from "./pages/Guide";
 import Account from "./pages/Account";
-import EditAccount from "./pages/EditAccount";
 import QRScannerPage from "./pages/ScanQR";
+import EditUser from './pages/EditUser'
 import DepositResult from "./pages/DepositResult";
 import SearchStation from "./pages/SearchStation";
 
@@ -39,7 +39,7 @@ function App() {
         <Route path="/info-qr/:qrCode" element={<InfoQR />} />
         <Route path="/guide" element={<Guide />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/edit-account" element={<EditAccount />} />
+        <Route path="/edit-account" element={<EditUser/>} />
         <Route path="/search-station" element={<SearchStation />} />
       </Routes>
     </Router>

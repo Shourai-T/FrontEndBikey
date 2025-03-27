@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react'
+import PreviousIcon from '../assets/previous-icon.png'
+import { useNavigate } from 'react-router-dom'
 
 const Guide = () => {
   const stepData=[

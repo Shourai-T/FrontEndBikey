@@ -40,11 +40,14 @@ const QRScanner = () => {
 
       {/* Button container */}
       <div className="h-[34vh] bg-white flex justify-evenly items-center">
-        <button className="flex items-center rounded-full border-2 border-black p-4">
+        <button className="flex items-center rounded-full border-2 border-black px-4 py-2 gap-1"
+        onClick={
+          () => navigate(-1)
+        }>
           <img src={ArrowIcon} alt="" className="w-6" />
           Quay lại
         </button>
-        <button className="flex items-center rounded-full border-2 border-black p-4">
+        <button className="flex items-center rounded-full border-2 border-black px-4 py-2 gap-1">
           <img src={Keyboard} alt="" className="w-6" />
           Nhập mã xe
         </button>
