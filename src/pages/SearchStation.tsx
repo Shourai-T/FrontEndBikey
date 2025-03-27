@@ -18,6 +18,7 @@ const SearchStation = () => {
 },[dispatch])
 
   const stationList = useSelector((state: any) => state.station.getAllStation.data);
+  const loadingStation = useSelector((state: any) => state.station.getAllStation.isFetching);
   const station = stationList?.map((station:any) => ({
     key:station._id,
     id: station._id,
@@ -39,7 +40,9 @@ const SearchStation = () => {
       setShowList(true);
     }
   };
-
+if(loadingStation || !station){
+  return <div>Loading...</div>
+}
   return (
     <div className="relative w-full pt-8 px-8">
       {/* Ô tìm kiếm */}
@@ -59,7 +62,6 @@ const SearchStation = () => {
                     key={station.id}
                     className=" hover:bg-gray-100 cursor-pointer text-black"
                     onClick={() => navigate(`/station/${station.id}`)}
-                    // onClick={() => navigate(`/station/${station.id}`)}
                 >
                     <div className="flex items-center justify-between border-b border-gray-200 border-1 py-2">
                         <div className="flex items-center gap-2">
