@@ -176,6 +176,7 @@ function StationDetail() {
           onReport={createReport}
         />
       )}
+      
     </div>
   );
 }

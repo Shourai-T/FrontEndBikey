@@ -19,6 +19,7 @@ import QRScannerPage from "./pages/ScanQR";
 import EditUser from './pages/EditUser'
 import DepositResult from "./pages/DepositResult";
 import SearchStation from "./pages/SearchStation";
+import RPFeedback from "./pages/RPFeedback";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/edit-account" element={<EditUser/>} />
         <Route path="/search-station" element={<SearchStation />} />
+        <Route path="/report" element={<RPFeedback />} />
       </Routes>
     </Router>
   );

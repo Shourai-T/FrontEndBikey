@@ -3,6 +3,7 @@ import IconParking from "../assets/IconParking.png";
 import IconFixBlack from "../assets/IconFixBlack.png";
 import Modal from "./Modal";
 import UserDot from "../assets/UserLocation.png"
+import { useNavigate } from "react-router-dom";
 
 interface RideStatusCardProps {
   rideId: string;
@@ -19,6 +20,7 @@ const RideStatusCard: React.FC<RideStatusCardProps> = ({
   onReturn,
   onReport,
 }) => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<{
     title: string;
@@ -45,6 +47,16 @@ const RideStatusCard: React.FC<RideStatusCardProps> = ({
       });
     }
     setIsModalOpen(true);
+  };
+
+  const handleConfirm = () => {
+    if (modalContent.type === "parking") {
+      onReturn();
+    } else {
+      onReport();
+      navigate("/report"); // Điều hướng đến /report khi báo xe hỏng
+    }
+    setIsModalOpen(false);
   };
 
   return (
@@ -85,7 +97,8 @@ const RideStatusCard: React.FC<RideStatusCardProps> = ({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={modalContent.type === "parking" ? onReturn : onReport}
+        // onConfirm={modalContent.type === "parking" ? onReturn : onReport}
+        onConfirm={handleConfirm}
         message={modalContent.message}
         actionType={modalContent.type}
       />
