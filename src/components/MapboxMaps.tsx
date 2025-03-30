@@ -20,11 +20,6 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
     lng: number;
   } | null>(null);
   const [isUserLocationSet, setIsUserLocationSet] = useState(false);
-  console.log({
-    latitude,
-    longitude,
-    stations,
-  })
   useEffect(() => {
     if (!mapContainerRef.current) return;
 

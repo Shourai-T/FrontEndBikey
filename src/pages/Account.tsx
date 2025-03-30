@@ -22,7 +22,6 @@ function Account (){
     }
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); 
         dispatch(logoutSuccess()); 
         navigate('/login'); 
     };
@@ -55,7 +54,6 @@ function Account (){
                 </div>
             </div>
             <div className='flex justify-between'>
-                <button className='border border-[#102590] text-[#102590] text-xs  h-[40px] py-2 rounded-full py-1 px-3'>Đổi mật khẩu</button>
                 <button className='border border-[#102590] text-[#102590] text-xs h-[40px] py-2 rounded-full py-1 px-3'
                 onClick={
                     () => {navigate('/edit-account')}
