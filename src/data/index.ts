@@ -1,7 +1,7 @@
 export const stations = [
-  { id: 1, name: "Trạm xe Hà Nội", location: "Hà Nội", latitude: 21.0285, longitude: 105.8542 },
-  { id: 2, name: "Trạm xe Sài Gòn", location: "TP. Hồ Chí Minh", latitude: 10.7769, longitude: 106.7009 },
-  { id: 3, name: "Trạm xe Đà Nẵng", location: "Đà Nẵng", latitude: 16.0471, longitude: 108.2065 },
-  { id: 4, name: "Trạm xe Hải Phòng", location: "Hải Phòng", latitude: 20.8651, longitude: 106.6837 },
-  { id: 5, name: "Trạm xe Cần Thơ", location: "Cần Thơ", latitude: 10.0452, longitude: 105.7469 },
+  { _id: 1, name: "Trạm xe Hà Nội", address: "Hà Nội", location: [105.8542, 21.0285] },
+  { _id: 2, name: "Trạm xe Sài Gòn", address: "TP. Hồ Chí Minh", location: [106.7009, 10.7769] },
+  { _id: 3, name: "Trạm xe Đà Nẵng", address: "Đà Nẵng", location: [108.2065, 16.0471] },
+  { _id: 4, name: "Trạm xe Hải Phòng", address: "Hải Phòng", location: [106.6837, 20.8651] },
+  { _id: 5, name: "Trạm xe Cần Thơ", address: "Cần Thơ", location: [105.7469, 10.0452] },
 ];
