@@ -32,8 +32,8 @@ function StationDetail() {
   //   listStations ? listStations.find((s: any) => s._id === id) : null
   // );
   const [station, setStation] = useState(() =>
-      stations.find((s: any) => s._id === id) 
-    );
+    stations.find((s: any) => s._id === id)
+  );
 
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
@@ -41,21 +41,21 @@ function StationDetail() {
   } | null>(null);
 
   useEffect(() => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Lỗi lấy vị trí:", error);
-          alert(
-            "Không thể lấy vị trí hiện tại. Vui lòng kiểm tra cài đặt định vị."
-          );
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 } // timeout 10s, cache 5s
-      );
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error("Lỗi lấy vị trí:", error);
+        alert(
+          "Không thể lấy vị trí hiện tại. Vui lòng kiểm tra cài đặt định vị."
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 } // timeout 10s, cache 5s
+    );
   }, []);
 
   useEffect(() => {
@@ -122,6 +122,14 @@ function StationDetail() {
   //   createBikeReport(data, dispatch);
   // };
 
+  const returnBike = () => {
+    alert("Xe đã được trả thành công!");
+  }
+
+  const createReport = () => {
+    alert("Báo cáo xe đã được tạo thành công!");
+  }
+
   return (
     <div className="relative w-[393px] h-[852px] mx-auto">
       {/* Ô tìm kiếm */}
@@ -180,7 +188,15 @@ function StationDetail() {
           onReport={createReport}
         />
       )} */}
-      
+
+      <RideStatusCard
+        rideId={"1"}
+        status="đang được sử dụng"
+        duration={`${duration} phút`}
+        onReturn={returnBike}
+        onReport={createReport}
+      />
+
     </div>
   );
 }

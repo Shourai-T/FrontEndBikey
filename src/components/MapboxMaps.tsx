@@ -3,6 +3,9 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import IconMarker from "../assets/IconMarker.png";
 import { getListStationsSort } from "../redux/api_request/station_api";
+import CustomMarker from "./MarkerCustom";
+import { createRoot } from "react-dom/client";
+import UserLocationMarker from "./UserLocationMarker";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN; // Lấy token từ .env
 
@@ -38,31 +41,52 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
     const map = mapRef.current as mapboxgl.Map;
     
     // Thêm marker cho tất cả station
+    // stations.forEach((station) => {
+    //   const markerEl = document.createElement("div");
+    //   markerEl.style.backgroundImage = `url(${IconMarker})`;
+    //   markerEl.style.width = "35px";
+    //   markerEl.style.height = "35px";
+    //   markerEl.style.backgroundSize = "cover";
+
+    //   new mapboxgl.Marker(markerEl)
+    //     .setLngLat([station.location[0], station.location[1]])
+    //     .setPopup(
+    //       new mapboxgl.Popup().setHTML(
+    //         `<h3>${station.name}</h3><p>${station.address}</p>`
+    //       )
+    //     )
+    //     .addTo(map);
+    // });
+
     stations.forEach((station) => {
       const markerEl = document.createElement("div");
-      markerEl.style.backgroundImage = `url(${IconMarker})`;
-      markerEl.style.width = "35px";
-      markerEl.style.height = "35px";
-      markerEl.style.backgroundSize = "cover";
+      const root = createRoot(markerEl);
+      root.render(<CustomMarker bikeCount={1} />); // Bike count default đang là 1
 
       new mapboxgl.Marker(markerEl)
         .setLngLat([station.location[0], station.location[1]])
-        .setPopup(
-          new mapboxgl.Popup().setHTML(
-            `<h3>${station.name}</h3><p>${station.address}</p>`
-          )
-        )
         .addTo(map);
     });
 
     // Thêm marker vị trí hiện tại của người dùng nếu có
+    // if (currentLocation) {
+    //   new mapboxgl.Marker({ color: "blue" })
+    //     .setLngLat([currentLocation.lng, currentLocation.lat])
+    //     .setPopup(new mapboxgl.Popup().setHTML("<h3>Vị trí của bạn</h3>"))
+    //     .addTo(map);
+    // }
+
+    // Marker mới -- Begin
     if (currentLocation) {
-      new mapboxgl.Marker({ color: "blue" })
+      const markerEl = document.createElement("div");
+      const root = createRoot(markerEl);
+      root.render(<UserLocationMarker lat={currentLocation.lat} lng={currentLocation.lng} />);
+
+      new mapboxgl.Marker(markerEl)
         .setLngLat([currentLocation.lng, currentLocation.lat])
-        .setPopup(new mapboxgl.Popup().setHTML("<h3>Vị trí của bạn</h3>"))
         .addTo(map);
     }
-
+    // Marker mới -- End
     return () => map.remove();
   }, [latitude, longitude, currentLocation]);
 
@@ -81,10 +105,20 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
 
         const map = mapRef.current as mapboxgl.Map;
 
-        new mapboxgl.Marker({ color: "blue" })
-          .setLngLat([lng, lat])
-          .setPopup(new mapboxgl.Popup().setHTML("<h3>Vị trí của bạn</h3>"))
-          .addTo(map);
+        // Marker cũ
+        // new mapboxgl.Marker({ color: "blue" })
+        //   .setLngLat([lng, lat])
+        //   .setPopup(new mapboxgl.Popup().setHTML("<h3>Vị trí của bạn</h3>"))
+        //   .addTo(map);
+
+        // Marker mới -- Begin
+        const markerEl = document.createElement("div");
+        const root = createRoot(markerEl);
+        root.render(<UserLocationMarker lat={lat} lng={lng} />);
+
+        new mapboxgl.Marker(markerEl).setLngLat([lng, lat]).addTo(map);
+        //  Marker mới -- End
+
 
         // Chỉ di chuyển bản đồ đến vị trí user nếu chưa có tọa độ station
         if (!latitude && !longitude) {
