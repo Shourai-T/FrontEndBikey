@@ -20,3 +20,13 @@ export const getListStationsSort = async (lat: number, lon: number, dispatch: an
         dispatch(getAllStationFailure());
     }
 }
+
+export const getStationHaveCountBike = async (dispatch: any, lat: number, lon: number) => {
+    dispatch(getAllStationStart());
+    try {
+        const res = await axiosInstance.get(`/v1/bikes/count?lat=${lat}&lon=${lon}`);
+        dispatch(getAllStationSuccess(res.data));
+    } catch (err: any) {
+        dispatch(getAllStationFailure());
+    }
+}

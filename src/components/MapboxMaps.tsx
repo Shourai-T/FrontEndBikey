@@ -61,7 +61,7 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
     stations.forEach((station) => {
       const markerEl = document.createElement("div");
       const root = createRoot(markerEl);
-      root.render(<CustomMarker bikeCount={1} />); // Bike count default đang là 1
+      root.render(<CustomMarker bikeCount={station.count} />); // Bike count default đang là 1
 
       new mapboxgl.Marker(markerEl)
         .setLngLat([station.location[0], station.location[1]])
