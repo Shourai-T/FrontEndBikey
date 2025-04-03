@@ -5,6 +5,8 @@ import IconDeposit from "../assets/IconDeposit.png";
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllTransaction } from '../redux/api_request/transaction_api';
 import { getUser } from '../redux/api_request/user_api';
+import LoadingScreen from '../components/LoadingScreen';
+import previousIcon from '../assets/previous-icon.png'
 function History() {
   const dispatch = useDispatch();
 
@@ -18,9 +20,12 @@ function History() {
   const loadingTransaction = useSelector((state: any) => state.transaction.getAllTransaction.isFetching);
   const loadingUser = useSelector((state: any) => state.user.getUser.isFetching);
   
-  if(loadingTransaction || loadingUser) return <p>Loading...</p>;
+  if(loadingTransaction || loadingUser) return <LoadingScreen />;
   return (
     <div className="mt-12 mx-auto bg-white">
+      <div className='flex items-center w-full px-8 pb-4'>
+        <img src={previousIcon} alt="Previous Icon" className="w-6 h-6 cursor-pointer" onClick={() => window.history.back()} />
+      </div>
       {/* Balance Card */}
       <div className="mx-8 p-8 h-auto rounded-[16px] text-white bg-cover bg-center"
         style={{ backgroundImage: `url(${BgPayment})` }}

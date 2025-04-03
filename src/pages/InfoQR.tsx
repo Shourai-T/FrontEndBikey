@@ -9,6 +9,7 @@ import { getUser } from "../redux/api_request/user_api";
 import { createRental } from "../redux/api_request/rental_api";
 import { createBikeReport } from "../redux/api_request/bikeReport_api";
 import { RuleAleart } from "../components/RuleAleart";
+import LoadingScreen from "../components/LoadingScreen";
 
 const InfoQR = () => {
   const { qrCode } = useParams();
@@ -61,8 +62,8 @@ const InfoQR = () => {
     createBikeReport(data, dispatch);
   };
 
-  if (loadingBike || loadingUser || !bike || !user || !userLocation) {
-    return <div>Loading...</div>;
+  if (loadingBike || loadingUser || !bike || !user) {
+    return <LoadingScreen />;
   }
 
   return (
