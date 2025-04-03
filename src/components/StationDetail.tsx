@@ -12,12 +12,14 @@ import {
 import { createBikeReport } from "../redux/api_request/bikeReport_api";
 import { getStationHaveCountBike } from "../redux/api_request/station_api";
 import LoadingScreen from "./LoadingScreen";
+import { se } from "date-fns/locale";
 
 function StationDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [error, setError] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [duration, setDuration] = useState(0);
 
@@ -31,7 +33,6 @@ function StationDetail() {
   const [station, setStation] = useState(() =>
     listStations ? listStations.find((s: any) => s._id === id) : null
   );
-
 
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
@@ -62,11 +63,10 @@ function StationDetail() {
       getStationHaveCountBike(
         dispatch,
         userLocation.latitude,
-        userLocation.longitude,
+        userLocation.longitude
       );
     }
   }, [userLocation]);
-
 
   useEffect(() => {
     if (rental) {
@@ -110,16 +110,15 @@ function StationDetail() {
   };
 
   if (!userLocation || listStations === null || loadingRental) {
-    return <LoadingScreen/>;
+    return <LoadingScreen />;
   }
   const createReport = async () => {
     const data = {
       bike: rental.bikeId._id,
       location: [userLocation!.longitude, userLocation!.latitude],
     };
-    createBikeReport(data, dispatch,navigate);
+    createBikeReport(data, dispatch, navigate, setError);
   };
-
 
   return (
     <div className="relative w-[393px] h-[852px] mx-auto">
@@ -179,8 +178,7 @@ function StationDetail() {
           onReport={createReport}
         />
       )}
-
-      
+      {error && <p className="text-red-600 text-xs text-center">{error}</p>}
     </div>
   );
 }
