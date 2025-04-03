@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../redux/api_request/user_api";
 import PreviousIcon from '../assets/previous-icon.png'
-import { updateUserSuccess } from "../redux/slice/userSlice";
 import LoadingScreen from "../components/LoadingScreen";
 
 const EditUser = () => {
     const [birthday, setBirthday] = useState("");
-    const [gender, setGender] = useState("male"); // Mặc định là "male"
+    const [gender, setGender] = useState("male");
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -20,10 +19,7 @@ const EditUser = () => {
     }, [dispatch]);
 
     const user = useSelector((state: any) => state.user.getUser.currentUser);
-    const loadingUser = useSelector(
-        (state: any) => state.user.getUser.isFetching
-    );
-    if (loadingUser) return <LoadingScreen />;
+    const loadingUser = useSelector((state: any) => state.user.getUser.isFetching);
 
     useEffect(() => {
         if (user?.dateOfBirth) {
@@ -34,27 +30,34 @@ const EditUser = () => {
         }
     }, [user]);
 
+    if (loadingUser) {
+        return <LoadingScreen />;
+    }
+
     const handleEdit = async () => {
         const updatedUser = {
             dateOfBirth: birthday,
-            gender: gender
+            gender: gender,
         };
-    
+
         try {
-            await updateUser(dispatch, updatedUser); // Gửi dữ liệu lên server
+            await updateUser(dispatch, updatedUser);
             navigate("/account");
         } catch (error) {
             console.error("Lỗi khi cập nhật user:", error);
         }
     };
-    
-    
 
     return (
         <div className="mt-4 px-8 min-h-screen items-center gap-8">
             {/* Header */}
             <div className="flex items-center gap-2">
-                <img src={PreviousIcon} alt="Previous Icon" className="w-[20px] h-[20px] cursor-pointer" onClick={() => navigate(-1)} />
+                <img
+                    src={PreviousIcon}
+                    alt="Previous Icon"
+                    className="w-[20px] h-[20px] cursor-pointer"
+                    onClick={() => navigate(-1)}
+                />
                 <h3 className="font-semibold my-4 text-xl">Chỉnh sửa thông tin</h3>
             </div>
 
@@ -62,12 +65,8 @@ const EditUser = () => {
             <div className="space-y-8 items-center">
                 {/* Số điện thoại */}
                 <div className="flex gap-5 items-center">
-                    <div className="w-[120px] font-semibold">
-                        Số điện thoại
-                    </div>
-                    <div className="flex-1 text-[11px] px-4">
-                        {user?.phoneNumber}
-                    </div>
+                    <div className="w-[120px] font-semibold">Số điện thoại</div>
+                    <div className="flex-1 text-[11px] px-4">{user?.phoneNumber}</div>
                 </div>
 
                 {/* Ngày sinh */}
@@ -103,14 +102,19 @@ const EditUser = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className='flex justify-between mt-8 px-12'>
-                <button className='border border-[#102590] text-[#102590] text-xs h-[40px] py-2 rounded-full py-1 px-5'
-                onClick={
-                    () => {navigate('/account')}
-                }>Hủy</button>
-                <button className='border border-[#102590] bg-[#102590] text-white text-xs h-[40px] py-2 rounded-full py-1 px-3'
-                onClick={handleEdit}
-                >Chỉnh sửa</button>
+            <div className="flex justify-between mt-8 px-12">
+                <button
+                    className="border border-[#102590] text-[#102590] text-xs h-[40px] py-2 rounded-full py-1 px-5"
+                    onClick={() => navigate("/account")}
+                >
+                    Hủy
+                </button>
+                <button
+                    className="border border-[#102590] bg-[#102590] text-white text-xs h-[40px] py-2 rounded-full py-1 px-3"
+                    onClick={handleEdit}
+                >
+                    Chỉnh sửa
+                </button>
             </div>
         </div>
     );

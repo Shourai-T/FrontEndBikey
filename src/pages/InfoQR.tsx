@@ -15,6 +15,7 @@ const InfoQR = () => {
   const { qrCode } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -33,7 +34,7 @@ const InfoQR = () => {
     getUser(dispatch);
   }, []);
   const startRent = () => {
-    createRental(bike._id, dispatch, navigate);
+    createRental(bike._id, dispatch, navigate, setError);
   };
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const InfoQR = () => {
       bike: bike._id,
       location: [userLocation!.longitude, userLocation!.latitude],
     };
-    createBikeReport(data, dispatch);
+    createBikeReport(data, dispatch, navigate, setError);
   };
 
   if (loadingBike || loadingUser || !bike || !user) {
@@ -98,6 +99,7 @@ const InfoQR = () => {
           >
             Bắt đầu
           </button>
+          {error && <p className="text-red-600 text-xs text-center">{error}</p>}
         </div>
         <div className="flex justify-center gap-5 items-center">
           <button
