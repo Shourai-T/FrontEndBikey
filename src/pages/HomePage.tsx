@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { QrCode, Search, Clock } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,8 @@ import IconUser from "../assets/IconUser.png";
 import Banner from "../assets/Banner.png";
 import account from "../assets/account.png";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../redux/api_request/user_api";
+import { getUser } from "../redux/api_request/user_api"
+import LoadingScreen from "../components/LoadingScreen";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -25,8 +26,7 @@ const HomePage = () => {
   const loadingUser = useSelector(
     (state: any) => state.user.getUser.isFetching
   );
-  if (loadingUser) return <p>Loading</p>;
-
+  if (loadingUser) return <LoadingScreen />;
   return (
     <div className="min-h-screen px-6 pt-8 relative">
       {/* Header */}

@@ -8,7 +8,8 @@ import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import PreviousIcon from '../assets/previous-icon.png'
 import { createTransactionWithZalopay } from '../redux/api_request/transaction_api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import LoadingScreen from '../components/LoadingScreen';
 
 const Deposit = () => {
   const navigate = useNavigate()
@@ -32,6 +33,8 @@ const Deposit = () => {
     }
   };
 
+  const loadingTransaction = useSelector((state:any) => state.transaction.createTransaction.isFetching)
+  if (loadingTransaction) return <LoadingScreen />
   return (
     <div className="flex flex-col h-screen bg-white p-6 mt-2 justify-between">
       <div className='flex flex-col'>

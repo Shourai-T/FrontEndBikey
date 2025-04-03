@@ -4,7 +4,7 @@ import Location from "../assets/location-icon.png";
 import Nearme from "../assets/near-icon.png";
 import NoStation from "../assets/HistoryEmpty.jpg";
 import { useNavigate } from "react-router-dom";
-
+import previousIcon from "../assets/previous-icon.png";
 const SearchStation = ({ setSearch, setShowSearch ,stations}: { setSearch: (value: string) => void; setShowSearch: (value: boolean) => void,stations:any[] }) => {
   const [search, setLocalSearch] = useState("");
 
@@ -34,8 +34,11 @@ const SearchStation = ({ setSearch, setShowSearch ,stations}: { setSearch: (valu
   };
 
   return (
-    <div className="relative w-full pt-8 px-8">
-      <SearchInput value={search} onChange={setLocalSearch} onSearch={handleSearch} onKeyDown={handleKeyDown}  />
+    <div className="relative w-full h-full pt-8 px-8">
+      <div className="flex items-center justify-between mb-4">
+        <img src={previousIcon} alt="Previous" className="w-6 h-6 cursor-pointer" onClick={() => navigate(-1)} />
+        <SearchInput value={search} onChange={setLocalSearch} onSearch={handleSearch} onKeyDown={handleKeyDown}  />
+      </div>
 
       <div className={`w-full mt-2 bg-white rounded-lg ${filteredStations.length > 0 ? "border-b border-gray-200" : ""}`}>
         {filteredStations.length > 0 ? (

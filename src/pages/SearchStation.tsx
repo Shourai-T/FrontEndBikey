@@ -6,6 +6,8 @@ import SearchInput from "../components/SearchInput";
 import { useNavigate } from "react-router-dom";
 import { getAllStation } from "../redux/api_request/station_api";
 import { useDispatch, useSelector } from "react-redux";
+import LoadingScreen from "../components/LoadingScreen";
+import previousIcon from "../assets/previous-icon.png"
 
 
 const SearchStation = () => {
@@ -41,13 +43,12 @@ const SearchStation = () => {
     }
   };
 if(loadingStation || !station){
-  return <div>Loading...</div>
+  return <LoadingScreen/>
 }
   return (
     <div className="relative w-full pt-8 px-8">
-      {/* Ô tìm kiếm */}
+      <img src ={previousIcon} alt="Previous" className="w-6 h-6 cursor-pointer absolute top-4 left-4" onClick={() => navigate(-1)} />
       <SearchInput value={search} onChange={setSearch} onSearch={handleSearch} onKeyDown={handleKeyDown} />
-
       {/* Danh sách trạm xe - Luôn hiển thị sau khi tìm kiếm */}
       {showList && (
         <div

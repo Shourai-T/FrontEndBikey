@@ -3,6 +3,9 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import IconMarker from "../assets/IconMarker.png";
 import { getListStationsSort } from "../redux/api_request/station_api";
+import LoadingScreen from "./LoadingScreen";
+import closeIcon from "../assets/IconClose.png"
+import { useNavigate } from "react-router-dom";
 import CustomMarker from "./MarkerCustom";
 import { createRoot } from "react-dom/client";
 import UserLocationMarker from "./UserLocationMarker";
@@ -15,22 +18,22 @@ interface MapboxMapProps {
   stations: any[];
 }
 
-const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
+const MapboxMap = ({ latitude, longitude, stations }: MapboxMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isUserLocationSet, setIsUserLocationSet] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // ✅ Thêm state loading'
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    // Nếu có station thì ưu tiên station, nếu không thì giữ vị trí user
+    setIsLoading(true); // ✅ Bắt đầu loading khi tạo map
+
     const defaultLat = latitude ?? currentLocation?.lat ?? 10.776889; // Hồ Chí Minh mặc định
     const defaultLng = longitude ?? currentLocation?.lng ?? 106.700987;
 
-    // Khởi tạo bản đồ
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current!,
       style: "mapbox://styles/mapbox/streets-v12",
@@ -39,7 +42,12 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
     });
 
     const map = mapRef.current as mapboxgl.Map;
-    
+
+    // ✅ Xử lý sự kiện tải xong bản đồ
+    map.on("load", () => {
+      setIsLoading(false); // Khi map load xong, tắt loading
+    });
+
     // Thêm marker cho tất cả station
     // stations.forEach((station) => {
     //   const markerEl = document.createElement("div");
@@ -65,6 +73,9 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
 
       new mapboxgl.Marker(markerEl)
         .setLngLat([station.location[0], station.location[1]])
+        .setPopup(
+          new mapboxgl.Popup().setHTML(`<h3 style ="font-weight: bold">${station.name}</h3><p style="font-size: 12px">${station.address}</p>`)
+        )
         .addTo(map);
     });
 
@@ -90,18 +101,15 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
     return () => map.remove();
   }, [latitude, longitude, currentLocation]);
 
-  // Lấy vị trí người dùng nếu chưa có tọa độ station
   useEffect(() => {
-    if (latitude !== undefined && longitude !== undefined) return; // Nếu đã có station thì không lấy vị trí user
-
-    // if (isUserLocationSet || !mapRef.current) return;
+    if (latitude !== undefined && longitude !== undefined) return;
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setCurrentLocation({ lat, lng });
-        setIsUserLocationSet(true); // Đánh dấu đã lấy vị trí user
+        setIsUserLocationSet(true);
 
         const map = mapRef.current as mapboxgl.Map;
 
@@ -120,7 +128,6 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
         //  Marker mới -- End
 
 
-        // Chỉ di chuyển bản đồ đến vị trí user nếu chưa có tọa độ station
         if (!latitude && !longitude) {
           map.flyTo({ center: [lng, lat], zoom: 14 });
         }
@@ -133,10 +140,13 @@ const MapboxMap = ({ latitude, longitude,stations }: MapboxMapProps) => {
   }, [isUserLocationSet]);
 
   return (
-    <div
-      ref={mapContainerRef}
-      className="absolute top-0 left-0 w-full h-full"
-    />
+    <div className="relative w-full h-full">
+      {isLoading && <LoadingScreen />} {/* ✅ Hiển thị màn hình loading */}
+      <div ref={mapContainerRef} className={`absolute top-0 left-0 w-full h-full ${isLoading ? "hidden" : ""}`} />
+      <button>
+        <img src={closeIcon} alt="Close" className="absolute top-2 right-2 w-6 h-6" onClick={() =>navigate(-1)} />
+      </button>
+    </div>
   );
 };
 
