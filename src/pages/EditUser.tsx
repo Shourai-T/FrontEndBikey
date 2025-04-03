@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../redux/api_request/user_api";
 import PreviousIcon from '../assets/previous-icon.png'
 import { updateUserSuccess } from "../redux/slice/userSlice";
+import LoadingScreen from "../components/LoadingScreen";
 
 const EditUser = () => {
     const [birthday, setBirthday] = useState("");
@@ -19,6 +20,10 @@ const EditUser = () => {
     }, [dispatch]);
 
     const user = useSelector((state: any) => state.user.getUser.currentUser);
+    const loadingUser = useSelector(
+        (state: any) => state.user.getUser.isFetching
+    );
+    if (loadingUser) return <LoadingScreen />;
 
     useEffect(() => {
         if (user?.dateOfBirth) {

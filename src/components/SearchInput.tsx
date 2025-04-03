@@ -12,6 +12,7 @@ interface SearchInputProps {
 const SearchInput = ({ value, onChange, onSearch, onKeyDown, onFocus  }: SearchInputProps) => {
   return (
     <div className="relative w-full">
+      
       <input
         type="text"
         placeholder="Tìm trạm xe..."

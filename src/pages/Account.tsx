@@ -7,6 +7,7 @@ import {format} from 'date-fns'
 import {vi } from 'date-fns/locale' 
 import { logoutSuccess } from '../redux/slice/authSlice';
 import PreviousIcon from '../assets/previous-icon.png'
+import LoadingScreen from '../components/LoadingScreen';
 function Account (){
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -26,10 +27,13 @@ function Account (){
         dispatch(logoutSuccess()); 
         navigate('/login'); 
     };
+
+    const loadingUser = useSelector((state:any) => state.user.getUser.isFetching)
     
    
 
     const user = useSelector((state:any) => state.user.getUser.currentUser)
+    if (loadingUser) return <LoadingScreen />
     return(
         <div className="width-screen flex flex-col gap-8 p-8 ">
             <div className="flex items-center gap-2">

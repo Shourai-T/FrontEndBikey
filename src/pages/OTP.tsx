@@ -4,6 +4,7 @@ import { auth } from "../../firebase";
 import { sendOTP, verifyOtp } from "../redux/api_request/auth_api";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
 
 
 const OTP: React.FC= () => {
@@ -68,6 +69,9 @@ const OTP: React.FC= () => {
       console.log("ConfirmationResult chưa được thiết lập!");
     }
   };
+
+  const loadingQR = useState((state:any) => state.auth.sendOTP.isFetching);
+  if (loadingQR) return <LoadingScreen />;
 
   return (
     <div className="h-full flex flex-col justify-center items-center p-8">
