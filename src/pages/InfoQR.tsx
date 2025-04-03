@@ -59,7 +59,7 @@ const InfoQR = () => {
       bike: bike._id,
       location: [userLocation!.longitude, userLocation!.latitude],
     };
-    createBikeReport(data, dispatch);
+    createBikeReport(data, dispatch,navigate);
   };
 
   if (loadingBike || loadingUser || !bike || !user) {

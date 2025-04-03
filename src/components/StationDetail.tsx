@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import SearchInput from "../components/SearchInput";
 import RideStatusCard from "./RideStatusCard";
@@ -10,8 +10,8 @@ import {
   returnRental,
 } from "../redux/api_request/rental_api";
 import { createBikeReport } from "../redux/api_request/bikeReport_api";
-import { stations } from "../data";
 import { getStationHaveCountBike } from "../redux/api_request/station_api";
+import LoadingScreen from "./LoadingScreen";
 
 function StationDetail() {
   const { id } = useParams();
@@ -110,14 +110,14 @@ function StationDetail() {
   };
 
   if (!userLocation || listStations === null || loadingRental) {
-    return <p>Đang tải...</p>;
+    return <LoadingScreen/>;
   }
   const createReport = async () => {
     const data = {
       bike: rental.bikeId._id,
       location: [userLocation!.longitude, userLocation!.latitude],
     };
-    createBikeReport(data, dispatch);
+    createBikeReport(data, dispatch,navigate);
   };
 
 
