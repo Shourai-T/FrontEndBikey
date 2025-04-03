@@ -11,6 +11,7 @@ import {
 } from "../redux/api_request/rental_api";
 import { createBikeReport } from "../redux/api_request/bikeReport_api";
 import { getListStationsSort } from "../redux/api_request/station_api";
+import { stations } from "../data";
 
 function StationDetail() {
   const { id } = useParams();
@@ -20,15 +21,18 @@ function StationDetail() {
   const [showSearch, setShowSearch] = useState(false);
   const [duration, setDuration] = useState(0);
 
-  const rental = useSelector((state: any) => state.rental.getRentalDetail.data);
-  const loadingRental = useSelector(
-    (state: any) => state.rental.getRentalDetail.isFetching
-  );
-  const listStations = useSelector(
-    (state: any) => state.station.getAllStation.data
-  );
+  // const rental = useSelector((state: any) => state.rental.getRentalDetail.data);
+  // const loadingRental = useSelector(
+  //   (state: any) => state.rental.getRentalDetail.isFetching
+  // );
+  // const listStations = useSelector(
+  //   (state: any) => state.station.getAllStation.data
+  // );
+  // const [station, setStation] = useState(() =>
+  //   listStations ? listStations.find((s: any) => s._id === id) : null
+  // );
   const [station, setStation] = useState(() =>
-    listStations ? listStations.find((s: any) => s._id === id) : null
+    stations.find((s: any) => s._id === id)
   );
 
   const [userLocation, setUserLocation] = useState<{
@@ -37,21 +41,21 @@ function StationDetail() {
   } | null>(null);
 
   useEffect(() => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Lỗi lấy vị trí:", error);
-          alert(
-            "Không thể lấy vị trí hiện tại. Vui lòng kiểm tra cài đặt định vị."
-          );
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 } // timeout 10s, cache 5s
-      );
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error("Lỗi lấy vị trí:", error);
+        alert(
+          "Không thể lấy vị trí hiện tại. Vui lòng kiểm tra cài đặt định vị."
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 } // timeout 10s, cache 5s
+    );
   }, []);
 
   useEffect(() => {
@@ -66,57 +70,65 @@ function StationDetail() {
   }, [userLocation]);
 
 
-  useEffect(() => {
-    if (rental) {
-      const updateDuration = () => {
-        const startTime = new Date(rental.startTime);
-        const now = new Date();
-        setDuration(
-          Math.floor((Number(now) - Number(startTime)) / (1000 * 60))
-        );
-      };
+  // useEffect(() => {
+  //   if (rental) {
+  //     const updateDuration = () => {
+  //       const startTime = new Date(rental.startTime);
+  //       const now = new Date();
+  //       setDuration(
+  //         Math.floor((Number(now) - Number(startTime)) / (1000 * 60))
+  //       );
+  //     };
 
-      updateDuration(); // Cập nhật ngay khi rental có dữ liệu
-      const interval = setInterval(updateDuration, 60000); // Cập nhật mỗi 60s
+  //     updateDuration(); // Cập nhật ngay khi rental có dữ liệu
+  //     const interval = setInterval(updateDuration, 60000); // Cập nhật mỗi 60s
 
-      return () => clearInterval(interval);
-    }
-  }, [rental]);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [rental]);
 
-  useEffect(() => {
-    if (id && Array.isArray(listStations)) {
-      const foundStation = listStations.find((s: any) => s._id === id);
-      if (foundStation) {
-        setStation(foundStation);
-        setSearch(foundStation.name);
-      }
-    }
-  }, [id, listStations]);
+  // useEffect(() => {
+  //   if (id && Array.isArray(listStations)) {
+  //     const foundStation = listStations.find((s: any) => s._id === id);
+  //     if (foundStation) {
+  //       setStation(foundStation);
+  //       setSearch(foundStation.name);
+  //     }
+  //   }
+  // }, [id, listStations]);
+
+  // const returnBike = () => {
+  //   if (!userLocation) {
+  //     alert("Không thể lấy vị trí hiện tại. Vui lòng thử lại.");
+  //     return;
+  //   }
+  //   returnRental(
+  //     rental._id,
+  //     userLocation!.latitude,
+  //     userLocation!.longitude,
+  //     dispatch,
+  //     navigate
+  //   );
+  // };
+
+  // if (!userLocation || listStations === null || loadingRental) {
+  //   return <p>Đang tải...</p>;
+  // }
+  // const createReport = async () => {
+  //   const data = {
+  //     bike: rental.bikeId._id,
+  //     location: [userLocation!.longitude, userLocation!.latitude],
+  //   };
+  //   createBikeReport(data, dispatch);
+  // };
 
   const returnBike = () => {
-    if (!userLocation) {
-      alert("Không thể lấy vị trí hiện tại. Vui lòng thử lại.");
-      return;
-    }
-    returnRental(
-      rental._id,
-      userLocation!.latitude,
-      userLocation!.longitude,
-      dispatch,
-      navigate
-    );
-  };
-
-  if (!userLocation || listStations === null || loadingRental) {
-    return <p>Đang tải...</p>;
+    alert("Xe đã được trả thành công!");
   }
-  const createReport = async () => {
-    const data = {
-      bike: rental.bikeId._id,
-      location: [userLocation!.longitude, userLocation!.latitude],
-    };
-    createBikeReport(data, dispatch);
-  };
+
+  const createReport = () => {
+    alert("Báo cáo xe đã được tạo thành công!");
+  }
 
   return (
     <div className="relative w-[393px] h-[852px] mx-auto">
@@ -137,7 +149,7 @@ function StationDetail() {
           <SearchStation
             setSearch={setSearch}
             setShowSearch={setShowSearch}
-            stations={listStations}
+            stations={stations}
           />
           <button
             className="absolute top-4 right-4 text-gray-600 text-lg"
@@ -163,11 +175,11 @@ function StationDetail() {
       <MapboxMap
         latitude={station?.location[1]}
         longitude={station?.location[0]}
-        stations={listStations}
+        stations={stations}
       />
 
       {/* Component RideStatusCard */}
-      {rental && (
+      {/* {rental && (
         <RideStatusCard
           rideId={rental.bikeId.bikeCode}
           status="đang được sử dụng"
@@ -175,7 +187,16 @@ function StationDetail() {
           onReturn={returnBike}
           onReport={createReport}
         />
-      )}
+      )} */}
+
+      <RideStatusCard
+        rideId={"1"}
+        status="đang được sử dụng"
+        duration={`${duration} phút`}
+        onReturn={returnBike}
+        onReport={createReport}
+      />
+
     </div>
   );
 }
