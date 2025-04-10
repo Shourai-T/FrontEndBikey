@@ -55,6 +55,16 @@ body {
   height: auto;
 }
 
+.custom-popup .mapboxgl-popup-content {
+  padding: 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.custom-popup .mapboxgl-popup-tip {
+  display: none;
+}
+
 .input-field {
   @apply w-full pl-10 pr-4 py-3.5 rounded-lg placeholder:text-xs focus:outline-none;
 }
