@@ -20,6 +20,8 @@ import EditUser from './pages/EditUser'
 import DepositResult from "./pages/DepositResult";
 import SearchStation from "./pages/SearchStation";
 import RPFeedback from "./pages/RPFeedback";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminHome from "./pages/Admin/AdminHome";
 
 function App() {
   return (
@@ -43,6 +45,11 @@ function App() {
         <Route path="/edit-account" element={<EditUser/>} />
         <Route path="/search-station" element={<SearchStation />} />
         <Route path="/report" element={<RPFeedback />} />
+
+        {/* Admin Page */}
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/home" element={<AdminHome />} />
       </Routes>
     </Router>
   );

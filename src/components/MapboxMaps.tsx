@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import CustomMarker from "./MarkerCustom";
 import { createRoot } from "react-dom/client";
 import UserLocationMarker from "./UserLocationMarker";
+import PopupContent from "./PopupContent";
+import ReactDOMServer from 'react-dom/server';
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN; // Lấy token từ .env
 
@@ -16,9 +18,10 @@ interface MapboxMapProps {
   latitude?: number;
   longitude?: number;
   stations: any[];
+  isAdmin?: boolean;
 }
 
-const MapboxMap = ({ latitude, longitude, stations }: MapboxMapProps) => {
+const MapboxMap = ({ latitude, longitude, stations, isAdmin = false }: MapboxMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -71,12 +74,37 @@ const MapboxMap = ({ latitude, longitude, stations }: MapboxMapProps) => {
       const root = createRoot(markerEl);
       root.render(<CustomMarker bikeCount={station.count} />); // Bike count default đang là 1
 
+      const popupContent = ReactDOMServer.renderToString(
+        <PopupContent
+          name={station.name}
+          address={station.address}
+          bikeCount={station.count}
+          stationId={station._id}
+          isAdmin={isAdmin}
+        />
+      );
+
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        offset: 25,
+        className: 'custom-popup'
+      }).setHTML(popupContent);
+
       new mapboxgl.Marker(markerEl)
         .setLngLat([station.location[0], station.location[1]])
         .setPopup(
-          new mapboxgl.Popup().setHTML(`<h3 style ="font-weight: bold">${station.name}</h3><p style="font-size: 12px">${station.address}</p>`)
+          popup
         )
         .addTo(map);
+
+        markerEl.addEventListener('mouseenter', () => {
+          popup.addTo(map);
+        });
+  
+        markerEl.addEventListener('mouseleave', () => {
+          popup.remove();
+        });
     });
 
     // Thêm marker vị trí hiện tại của người dùng nếu có
@@ -142,7 +170,7 @@ const MapboxMap = ({ latitude, longitude, stations }: MapboxMapProps) => {
   return (
     <div className="relative w-full h-full">
       {isLoading && <LoadingScreen />} {/* ✅ Hiển thị màn hình loading */}
-      <div ref={mapContainerRef} className={`absolute top-0 left-0 w-full h-full ${isLoading ? "hidden" : ""}`} />
+      <div ref={mapContainerRef} className={`absolute w-full h-full ${isLoading ? "hidden" : ""}`} />
       <button>
         <img src={closeIcon} alt="Close" className="absolute top-2 right-2 w-6 h-6" onClick={() =>navigate(-1)} />
       </button>
