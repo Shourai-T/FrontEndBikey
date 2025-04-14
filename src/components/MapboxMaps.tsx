@@ -10,6 +10,7 @@ import CustomMarker from "./MarkerCustom";
 import PopupContent from "./PopupContent";
 import LoadingScreen from "./LoadingScreen";
 import MapboxPopupContainer from "./MapboxPopupContainer"; // ✅ Import Portal wrapper
+import ReportLocationMarker from "./ReportLocationMarker";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -18,9 +19,10 @@ interface MapboxMapProps {
   longitude?: number;
   stations: any[];
   isAdmin?: boolean;
+  reportLocation?: [number, number];
 }
 
-const MapboxMap = ({ latitude, longitude, stations, isAdmin = false }: MapboxMapProps) => {
+const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocation }: MapboxMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -103,6 +105,21 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false }: MapboxMap
         .addTo(map);
     }
 
+    // Report location
+    if (reportLocation) {
+      const markerEl = document.createElement("div");
+      const root = createRoot(markerEl);
+      root.render(<ReportLocationMarker lat={reportLocation[1]} lng={reportLocation[0]} />);
+
+      new mapboxgl.Marker(markerEl)
+        .setLngLat([reportLocation[0], reportLocation[1]])
+        .addTo(map);
+
+      // bay đến vị trí báo cáo
+      map.flyTo({ center: [reportLocation[0], reportLocation[1]], zoom: 16 });
+    }
+
+
     return () => map.remove();
   }, [latitude, longitude, currentLocation]);
 
@@ -139,14 +156,14 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false }: MapboxMap
     <div className="relative w-full h-full">
       {isLoading && <LoadingScreen />}
       <div ref={mapContainerRef} className={`absolute w-full h-full ${isLoading ? "hidden" : ""}`} />
-      <button>
+      {/* <button>
         <img
           src={CloseIcon}
           alt="Close"
           className="absolute top-2 right-2 w-6 h-6"
           onClick={() => navigate(-1)}
         />
-      </button>
+      </button> */}
     </div>
   );
 };
