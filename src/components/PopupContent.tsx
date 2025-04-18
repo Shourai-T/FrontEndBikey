@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateStationById } from "../redux/api_request/station_api";
 
 interface PopupContentProps {
   name: string;
@@ -8,6 +10,7 @@ interface PopupContentProps {
   lat: number;
   lng: number;
   isAdmin?: boolean;
+  dispatch: any;
 }
 
 const PopupContent: React.FC<PopupContentProps> = ({
@@ -18,9 +21,9 @@ const PopupContent: React.FC<PopupContentProps> = ({
   lat,
   lng,
   isAdmin = false,
+  dispatch,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-
   const [formData, setFormData] = useState({
     name,
     address,
@@ -31,22 +34,38 @@ const PopupContent: React.FC<PopupContentProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const handleSubmit = () => {
-    console.log('Gửi dữ liệu chỉnh sửa:', formData);
-    // TODO: Gửi API cập nhật thông tin tại đây
+    console.log("Gửi dữ liệu chỉnh sửa:", formData);
+    const updatedData = {
+      name: formData.name,
+      address: formData.address,
+      location: [
+        parseFloat(formData.lng.toString()),
+        parseFloat(formData.lat.toString()),
+      ],
+    };
+    console.log("Dữ liệu cập nhật:", updatedData);
+    updateStationById(stationId, updatedData, dispatch);
     setIsEditing(false);
   };
 
   const handleCancel = () => {
+    // Reset form data to original values
+    setFormData({
+      name,
+      address,
+      lat,
+      lng,
+      bikeCount: bikeCount || 1,
+    });
     setIsEditing(false);
   };
-
 
   if (!isAdmin) {
     return (
@@ -64,12 +83,20 @@ const PopupContent: React.FC<PopupContentProps> = ({
 
         {isEditing ? (
           <>
-            <input type="text" name="name" onChange={handleChange} value={formData.name} className="text-xl font-semibold mb-3 p-2 text-[#666666] rounded-lg w-full border border-none outline-none bg-[#F7F7F7]"/>
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={formData.name}
+              className="text-xl font-semibold mb-3 p-2 text-[#666666] rounded-lg w-full border border-none outline-none bg-[#F7F7F7]"
+            />
             <p className="text-sm text-black mb-4">{formData.address}</p>
 
             <div className="flex gap-2 my-8">
               <div className="flex gap-2 items-center w-1/2">
-                <label className="text-xs font-semibold whitespace-nowrap mb-1">Kinh độ</label>
+                <label className="text-xs font-semibold whitespace-nowrap mb-1">
+                  Kinh độ
+                </label>
                 <input
                   type="number"
                   name="lat"
@@ -79,7 +106,9 @@ const PopupContent: React.FC<PopupContentProps> = ({
                 />
               </div>
               <div className="flex gap-2 items-center w-1/2">
-                <label className="text-xs font-semibold whitespace-nowrap mb-1">Vĩ độ</label>
+                <label className="text-xs font-semibold whitespace-nowrap mb-1">
+                  Vĩ độ
+                </label>
                 <input
                   type="number"
                   name="lng"
@@ -91,7 +120,8 @@ const PopupContent: React.FC<PopupContentProps> = ({
             </div>
 
             <div className="mb-8 text-sm">
-              <span className="font-medium">Số xe hiện có:</span> {formData.bikeCount}
+              <span className="font-medium">Số xe hiện có:</span>{" "}
+              {formData.bikeCount}
             </div>
 
             <div className="flex justify-center gap-6">

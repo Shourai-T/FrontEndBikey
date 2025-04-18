@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import IconMarker from "../assets/IconMarker.png";
-import CloseIcon from "../assets/IconClose.png"
+import CloseIcon from "../assets/IconClose.png";
 import { useNavigate } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import UserLocationMarker from "./UserLocationMarker";
@@ -11,6 +11,7 @@ import PopupContent from "./PopupContent";
 import LoadingScreen from "./LoadingScreen";
 import MapboxPopupContainer from "./MapboxPopupContainer"; // ✅ Import Portal wrapper
 import ReportLocationMarker from "./ReportLocationMarker";
+import { useDispatch } from "react-redux";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -22,14 +23,23 @@ interface MapboxMapProps {
   reportLocation?: [number, number];
 }
 
-const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocation }: MapboxMapProps) => {
+const MapboxMap = ({
+  latitude,
+  longitude,
+  stations,
+  isAdmin = false,
+  reportLocation,
+}: MapboxMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
   const [isUserLocationSet, setIsUserLocationSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -66,7 +76,7 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocat
         closeButton: false,
         closeOnClick: false,
         offset: 25,
-        className: "custom-popup"
+        className: "custom-popup",
       }).setDOMContent(popupContainer);
 
       new mapboxgl.Marker(markerEl)
@@ -89,6 +99,7 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocat
             lat={station.location[1]} // Vĩ độ
             lng={station.location[0]} // Kinh độ
             isAdmin={isAdmin}
+            dispatch={dispatch}
           />
         </MapboxPopupContainer>
       );
@@ -98,7 +109,12 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocat
     if (currentLocation) {
       const markerEl = document.createElement("div");
       const root = createRoot(markerEl);
-      root.render(<UserLocationMarker lat={currentLocation.lat} lng={currentLocation.lng} />);
+      root.render(
+        <UserLocationMarker
+          lat={currentLocation.lat}
+          lng={currentLocation.lng}
+        />
+      );
 
       new mapboxgl.Marker(markerEl)
         .setLngLat([currentLocation.lng, currentLocation.lat])
@@ -109,7 +125,9 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocat
     if (reportLocation) {
       const markerEl = document.createElement("div");
       const root = createRoot(markerEl);
-      root.render(<ReportLocationMarker lat={reportLocation[1]} lng={reportLocation[0]} />);
+      root.render(
+        <ReportLocationMarker lat={reportLocation[1]} lng={reportLocation[0]} />
+      );
 
       new mapboxgl.Marker(markerEl)
         .setLngLat([reportLocation[0], reportLocation[1]])
@@ -118,7 +136,6 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocat
       // bay đến vị trí báo cáo
       map.flyTo({ center: [reportLocation[0], reportLocation[1]], zoom: 16 });
     }
-
 
     return () => map.remove();
   }, [latitude, longitude, currentLocation]);
@@ -155,7 +172,10 @@ const MapboxMap = ({ latitude, longitude, stations, isAdmin = false, reportLocat
   return (
     <div className="relative w-full h-full">
       {isLoading && <LoadingScreen />}
-      <div ref={mapContainerRef} className={`absolute w-full h-full ${isLoading ? "hidden" : ""}`} />
+      <div
+        ref={mapContainerRef}
+        className={`absolute w-full h-full ${isLoading ? "hidden" : ""}`}
+      />
       {/* <button>
         <img
           src={CloseIcon}

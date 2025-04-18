@@ -20,6 +20,7 @@
     "axios": "^1.8.3",
     "caniuse-lite": "^1.0.30001707",
     "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "dotenv": "^16.4.7",
     "firebase": "^11.4.0",
     "html5-qrcode": "^2.3.8",
