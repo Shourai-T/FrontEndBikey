@@ -4,15 +4,20 @@ const bikeState = createSlice({
     name: 'bike',
     initialState: {
         countBikeEachStation: {
-            data:null,
+            data: null,
             isFetching: false,
             error: false
         },
-        bikeDetail:{
-            data:null,
-            isFetching:false,
-            error:false
-        }
+        bikeDetail: {
+            data: null,
+            isFetching: false,
+            error: false
+        },
+        bikeList: {
+            data: null,
+            isFetching: false,
+            error: false
+        },
     },
     reducers: {
         countBikeEachStationStart(state) {
@@ -40,9 +45,23 @@ const bikeState = createSlice({
         getBikeByQRCodeFailure(state) {
             state.bikeDetail.error = true;
             state.bikeDetail.isFetching = false;
+        },
+        getBikeListStart(state) {
+            state.bikeList.isFetching = true;
+            state.bikeList.error = false;
+        },
+        getBikeListSuccess(state, action) {
+            state.bikeList.data = action.payload.result;
+            state.bikeList.isFetching = false;
+            state.bikeList.error = false;
+        },
+        getBikeListFailure(state) {
+            state.bikeList.error = true;
+            state.bikeList.isFetching = false;
         }
     }
 })
+export const { getBikeListStart, getBikeListSuccess, getBikeListFailure } = bikeState.actions;
 
 export const { countBikeEachStationStart, countBikeEachStationFailure, countBikeEachStationSuccess } = bikeState.actions;
 

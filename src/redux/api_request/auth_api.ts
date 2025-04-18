@@ -7,11 +7,15 @@ import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from 'fi
 import { auth } from '../../../firebase'
 
 
-export const loginUser = async (user: any, dispatch: any, navigate: any, setError: any) => {
+export const loginUser = async (user: any, dispatch: any, navigate: any, setError?: any) => {
   dispatch(loginStart());
   try {
     const res = await axiosInstance.post('/v1/auth/login', user)
     dispatch(loginSuccess(res.data));
+    if (res.data.result.user_role === "admin") {
+      navigate("/admin/home");
+      return
+    }
     navigate("/home");
   } catch (err: any) {
     const errorCode = err.response?.data?.code;
