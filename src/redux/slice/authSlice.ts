@@ -5,7 +5,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         login: {
-            currentUser: null,
+            currentUser: null as { isVerified?: boolean } | null,
             isFetching: false,
             error: false
         },
@@ -48,7 +48,7 @@ const authSlice = createSlice({
             state.register.isFetching = false;
         },
         registerSuccess(state, actions) {
-            state.login.currentUser = actions.payload;
+            state.login.currentUser = actions.payload.result;
             state.register.error = false;
             state.register.isFetching = false;
         },
@@ -74,6 +74,10 @@ const authSlice = createSlice({
             state.verifyOtp.error = false;
         },
         verifyOtpSuccess(state) {
+            state.login.currentUser = {
+                ...(state.login.currentUser || {}),
+                isVerified: true
+            } as { isVerified?: boolean };
             state.verifyOtp.success = true;
             state.verifyOtp.isFetching = false;
             state.verifyOtp.error = false;

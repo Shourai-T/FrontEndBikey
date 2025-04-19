@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import store from "../redux/store";
+import { store } from "../redux/store";
 import { loginSuccess, logoutSuccess } from "../redux/slice/authSlice";
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

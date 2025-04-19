@@ -16,40 +16,50 @@ import StationDetail from "./components/StationDetail";
 import Guide from "./pages/Guide";
 import Account from "./pages/Account";
 import QRScannerPage from "./pages/ScanQR";
-import EditUser from './pages/EditUser'
+import EditUser from "./pages/EditUser";
 import DepositResult from "./pages/DepositResult";
 import SearchStation from "./pages/SearchStation";
 import RPFeedback from "./pages/RPFeedback";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminHome from "./pages/Admin/AdminHome";
+import { useSelector } from "react-redux";
+import ProtectedRoute from "./middleware/ProtectedRoute";
+import Unauthorized from "./pages/Unauthorized";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/history" element={<History />} />
-        <Route path="/history-empty" element={<HistoryEmpty />} />
-        <Route path="/deposit" element={<Deposit />} />
-        <Route path="/deposit-result" element={<DepositResult />} />
-        <Route path="/register/otp" element={<OTP />} />
+        {/* Public routes */}
         <Route path="/register" element={<Register />} />
+        <Route path="/register/otp/:phoneNumber" element={<OTP />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/station" element={<StationDetail />} />
-        <Route path="/station/:id" element={<StationDetail />} />
-        <Route path="/scanqr" element={<QRScannerPage />} />
-        <Route path="/info-qr/:qrCode" element={<InfoQR />} />
-        <Route path="/guide" element={<Guide />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/edit-account" element={<EditUser/>} />
-        <Route path="/search-station" element={<SearchStation />} />
-        <Route path="/report" element={<RPFeedback />} />
 
-        {/* Admin Page */}
-
+        {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/home" element={<AdminHome />} />
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+          <Route path="/admin/home" element={<AdminHome />} />
+        </Route>
+
+        {/* User routes */}
+        <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/history-empty" element={<HistoryEmpty />} />
+          <Route path="/deposit" element={<Deposit />} />
+          <Route path="/deposit-result" element={<DepositResult />} />
+          <Route path="/station" element={<StationDetail />} />
+          <Route path="/station/:id" element={<StationDetail />} />
+          <Route path="/scanqr" element={<QRScannerPage />} />
+          <Route path="/info-qr/:qrCode" element={<InfoQR />} />
+          <Route path="/guide" element={<Guide />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/edit-account" element={<EditUser />} />
+          <Route path="/search-station" element={<SearchStation />} />
+          <Route path="/report" element={<RPFeedback />} />
+        </Route>
       </Routes>
     </Router>
   );
