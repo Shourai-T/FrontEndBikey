@@ -1,4 +1,3 @@
-
 import { loginStart, loginSuccess, loginFailure, registerFailure, registerSuccess, registerStart, logoutSuccess, logoutFailure, verifyOtpStart, verifyOtpSuccess, verifyOtpFailure, sendOTPStart, sendOTPSuccess, sendOTPFailure } from '../slice/authSlice'
 import axiosInstance from '../../axios/axios.interceptor';
 import { getErrorMessage } from '../../data/errorMessage';
@@ -61,6 +60,7 @@ export const verifyOtp = async (otp: string, dispatch: any, navigate: any, confi
     // Gửi idToken lên backend nếu cần
     const idToken = await user.getIdToken();
     const isSucces = await sendTokenToBackend(idToken);
+    console.log("isSucces", isSucces)
     if (isSucces) {
       dispatch(verifyOtpSuccess());
       console.log("Xác thực thành công! Số điện thoại: ", user.phoneNumber);
@@ -78,17 +78,34 @@ export const sendOTP = async (recaptchaVerifier: any, phoneNumber: string, setCo
   try {
     if (!recaptchaVerifier) {
       console.log("Đang khởi tạo reCAPTCHA, vui lòng thử lại.");
+      dispatch(sendOTPFailure());
       return;
     }
-    console.log("recaptchaVerifier", recaptchaVerifier);
 
-    const confirmation = await signInWithPhoneNumber(auth, formatPhoneNumber(phoneNumber), recaptchaVerifier);
+    // Make sure to render the reCAPTCHA widget before sending the OTP
+    await recaptchaVerifier.render();
+
+    // Format the phone number and initiate the verification process
+    const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+    console.log("Sending OTP to:", formattedPhoneNumber);
+
+    const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, recaptchaVerifier);
     setConfirmationResult(confirmation);
     console.log("OTP đã được gửi!");
     dispatch(sendOTPSuccess());
   } catch (error) {
     console.log("error", error);
     console.log("Lỗi khi gửi OTP. Vui lòng thử lại.");
+
+    // Recreate recaptchaVerifier if there's an error
+    if (recaptchaVerifier) {
+      try {
+        recaptchaVerifier.clear();
+      } catch (e) {
+        console.log("Failed to clear reCAPTCHA", e);
+      }
+    }
+
     dispatch(sendOTPFailure());
   }
 };

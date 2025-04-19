@@ -12,7 +12,6 @@ import {
 import { createBikeReport } from "../redux/api_request/bikeReport_api";
 import { getStationHaveCountBike } from "../redux/api_request/station_api";
 import LoadingScreen from "./LoadingScreen";
-import { se } from "date-fns/locale";
 
 function StationDetail() {
   const { id } = useParams();
