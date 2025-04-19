@@ -4,7 +4,7 @@ import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCteFk3nQapovKbV9H-KnGhEw80CA-cqXA",
+    apiKey: `${import.meta.env.VITE_API_KEY_FB}`,
     authDomain: "bikey-d2405.firebaseapp.com",
     projectId: "bikey-d2405",
     storageBucket: "bikey-d2405.firebasestorage.app",
