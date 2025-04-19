@@ -9,7 +9,7 @@ import UserLocationMarker from "./UserLocationMarker";
 import CustomMarker from "./MarkerCustom";
 import PopupContent from "./PopupContent";
 import LoadingScreen from "./LoadingScreen";
-import MapboxPopupContainer from "./MapboxPopupContainer"; // ✅ Import Portal wrapper
+import MapboxPopupContainer from "./MapboxPopupContainer"; 
 import ReportLocationMarker from "./ReportLocationMarker";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
