@@ -76,7 +76,9 @@ function StationDetail() {
           Math.floor((Number(now) - Number(startTime)) / (1000 * 60))
         );
       };
-
+      if (duration < 0) {
+        setDuration(0);
+      }
       updateDuration(); // Cập nhật ngay khi rental có dữ liệu
       const interval = setInterval(updateDuration, 60000); // Cập nhật mỗi 60s
 
