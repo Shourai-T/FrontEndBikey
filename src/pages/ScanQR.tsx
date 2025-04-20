@@ -9,15 +9,15 @@ const QRScanner = () => {
   const navigate = useNavigate();
   const [showPopupInputQR, setShowPopupInputQR] = useState(false); 
   // Xử lý kết quả quét (bao gồm cả lỗi)
-  // const handleResult = (result: any, error: any) => {
-  //   if (result) {
-  //     navigate(`/info-qr/${result?.text}`);
-  //     console.log("QR Code Data:", result?.text);
-  //   }
-  //   if (error) {
-  //     console.error("Error scanning QR code:", error);
-  //   }
-  // };
+  const handleResult = (result: any, error: any) => {
+    if (result) {
+      navigate(`/info-qr/${result?.text}`);
+      console.log("QR Code Data:", result?.text);
+    }
+    if (error) {
+      console.error("Error scanning QR code:", error);
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col">
