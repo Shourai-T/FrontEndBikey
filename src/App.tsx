@@ -32,7 +32,7 @@ function App() {
       <Routes>
         {/* Public routes */}
         <Route path="/register" element={<Register />} />
-        <Route path="/register/otp/:phoneNumber" element={<OTP />} />
+        {/* <Route path="/register/otp/:phoneNumber" element={<OTP />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -59,6 +59,10 @@ function App() {
           <Route path="/edit-account" element={<EditUser />} />
           <Route path="/search-station" element={<SearchStation />} />
           <Route path="/report" element={<RPFeedback />} />
+        </Route>
+
+        <Route>
+          <Route path="/homepage" element={<QRScannerPage />} />
         </Route>
       </Routes>
     </Router>
