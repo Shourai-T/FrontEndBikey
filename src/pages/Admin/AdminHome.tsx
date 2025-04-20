@@ -246,7 +246,7 @@ const AdminHome = () => {
                             {report.userId.fullName}
                           </td>
                           <td className="text-lg py-4 px-4 text-center">
-                            {report.bike.bikeCode}
+                            {report.bike?.bikeCode}
                           </td>
                           <td className="text-lg py-4 px-4 text-center">
                             <a
@@ -313,7 +313,8 @@ const AdminHome = () => {
           <div className="hidden z-20 md:flex md:w-[300px] bg-white px-6 py-8 shadow-[0_2px_10px_1px_#00000040]">
             <div className="w-full">
               <p className="text-lg">
-                Xin chào, <strong className="font-medium">{user.fullName}</strong>
+                Xin chào,{" "}
+                <strong className="font-medium">{user.fullName}</strong>
               </p>
               <hr className="mt-4 mb-8 border-black" />
               <ul className="space-y-6 text-gray-600 flex flex-col items-center gap-3">
