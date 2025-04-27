@@ -8,7 +8,6 @@ import PopupInputQR from "../components/PopupInputQR";
 const QRScanner = () => {
   const navigate = useNavigate();
   const [showPopupInputQR, setShowPopupInputQR] = useState(false); 
-  // Xử lý kết quả quét (bao gồm cả lỗi)
   const handleResult = (result: any, error: any) => {
     if (result) {
       navigate(`/info-qr/${result?.text}`);
@@ -25,7 +24,7 @@ const QRScanner = () => {
       <div className="flex-1 flex justify-center items-center min-h-[80vh] bg-black">
         <div className="w-[80%] h-[50%] max-w-[400px] max-h-[500px]">
           <QrReader
-            // onResult={handleResult}
+            onResult={handleResult}
             constraints={{ facingMode: "environment" }}
             containerStyle={{
               width: "100%",
