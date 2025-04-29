@@ -140,26 +140,65 @@ const MapboxMap = ({
     return () => map.remove();
   }, [latitude, longitude, currentLocation]);
 
+  // useEffect(() => {
+  //   if (latitude !== undefined && longitude !== undefined) return;
+
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const lat = position.coords.latitude;
+  //       const lng = position.coords.longitude;
+  //       setCurrentLocation({ lat, lng });
+  //       setIsUserLocationSet(true);
+
+  //       const map = mapRef.current as mapboxgl.Map;
+
+  //       const markerEl = document.createElement("div");
+  //       const root = createRoot(markerEl);
+  //       root.render(<UserLocationMarker lat={lat} lng={lng} />);
+
+  //       new mapboxgl.Marker(markerEl).setLngLat([lng, lat]).addTo(map);
+
+  //       if (!latitude && !longitude) {
+  //         map.flyTo({ center: [lng, lat], zoom: 14 });
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error("Lỗi lấy vị trí:", error);
+  //     },
+  //     { enableHighAccuracy: true }
+  //   );
+  // }, [isUserLocationSet]);
+
   useEffect(() => {
     if (latitude !== undefined && longitude !== undefined) return;
-
-    navigator.geolocation.getCurrentPosition(
+  
+    let userMarker: mapboxgl.Marker | null = null; // để giữ marker người dùng
+  
+    const watchId = navigator.geolocation.watchPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setCurrentLocation({ lat, lng });
         setIsUserLocationSet(true);
-
+  
         const map = mapRef.current as mapboxgl.Map;
-
-        const markerEl = document.createElement("div");
-        const root = createRoot(markerEl);
-        root.render(<UserLocationMarker lat={lat} lng={lng} />);
-
-        new mapboxgl.Marker(markerEl).setLngLat([lng, lat]).addTo(map);
-
-        if (!latitude && !longitude) {
-          map.flyTo({ center: [lng, lat], zoom: 14 });
+        
+        if (!userMarker) {
+          // Nếu chưa có marker => tạo mới
+          const markerEl = document.createElement("div");
+          const root = createRoot(markerEl);
+          root.render(<UserLocationMarker lat={lat} lng={lng} />);
+  
+          userMarker = new mapboxgl.Marker(markerEl)
+            .setLngLat([lng, lat])
+            .addTo(map);
+  
+          if (!latitude && !longitude) {
+            map.flyTo({ center: [lng, lat], zoom: 14 });
+          }
+        } else {
+          // Nếu có marker rồi => chỉ update vị trí
+          userMarker.setLngLat([lng, lat]);
         }
       },
       (error) => {
@@ -167,7 +206,12 @@ const MapboxMap = ({
       },
       { enableHighAccuracy: true }
     );
+  
+    return () => {
+      navigator.geolocation.clearWatch(watchId); // Clear watch khi component unmount
+    };
   }, [isUserLocationSet]);
+  
 
   return (
     <div className="relative w-full h-full">
