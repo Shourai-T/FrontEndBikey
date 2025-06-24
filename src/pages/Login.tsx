@@ -13,18 +13,18 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [error, setError] = useState("");
-  const isDisabled = !phone || !password; 
+  const isDisabled = !phone || !password;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e:any): void => {
+  const handleLogin = (e: any): void => {
     e.preventDefault();
     setError("");
-    const newUser ={
+    const newUser = {
       phoneNumber: phone,
       password: password,
     };
-    loginUser(newUser,dispatch,navigate,setError);
+    loginUser(newUser, dispatch, navigate, setError);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -53,10 +53,12 @@ function Login() {
         <h2 className="text-3xl font-bold">Đăng nhập</h2>
         <form className="w-full max-w-sm">
           <div className="space-y-6 w-full">
-            
             {/* Input số điện thoại */}
             <div className="relative flex items-center">
-              <FontAwesomeIcon icon={faPhone} className="absolute left-3 text-gray-400" />
+              <FontAwesomeIcon
+                icon={faPhone}
+                className="absolute left-3 text-gray-400"
+              />
               <input
                 type="tel"
                 placeholder="Số điện thoại"
@@ -68,7 +70,10 @@ function Login() {
 
             {/* Input mật khẩu */}
             <div className="relative flex items-center">
-              <FontAwesomeIcon icon={faLock} className="absolute left-3 text-gray-400" />
+              <FontAwesomeIcon
+                icon={faLock}
+                className="absolute left-3 text-gray-400"
+              />
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Mật khẩu"
@@ -81,7 +86,11 @@ function Login() {
                 className="absolute right-3"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <EyeOff size={20} className="text-gray-500" /> : <Eye size={20} className="text-gray-500" />}
+                {showPassword ? (
+                  <EyeOff size={20} className="text-gray-500" />
+                ) : (
+                  <Eye size={20} className="text-gray-500" />
+                )}
               </button>
             </div>
 
@@ -89,27 +98,32 @@ function Login() {
             <button
               type="submit"
               className={`w-full py-2 rounded-lg transition-all duration-200 hover:shadow-inner-lg ${
-                isDisabled ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-lg" : "bg-[#FFB142] text-white shadow hover:bg-[#FFC168]"
+                isDisabled
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-lg"
+                  : "bg-[#FFB142] text-white shadow hover:bg-[#FFC168]"
               }`}
-              
-              disabled={isDisabled} 
+              disabled={isDisabled}
               onClick={handleLogin}
-              
             >
               Đăng nhập
             </button>
-            {error && <p className="text-red-600 text-xs text-center">{error}</p>}
+            {error && (
+              <p className="text-red-600 text-xs text-center">{error}</p>
+            )}
           </div>
         </form>
       </div>
       <div className="flex gap-1 pt-[20px]">
         <p className="text-[14px]">Chưa có tài khoản?</p>
-        <button className="font-bold text-[14px]" 
-        onClick={() =>{
-          navigate("/register")
-        }}>Đăng kí ngay</button>
+        <button
+          className="font-bold text-[14px]"
+          onClick={() => {
+            navigate("/register");
+          }}
+        >
+          Đăng kí ngay
+        </button>
       </div>
-
     </div>
   );
 }

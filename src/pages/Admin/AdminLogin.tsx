@@ -16,7 +16,7 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -102,15 +102,7 @@ const AdminLogin = () => {
                     loading ? "opacity-70 cursor-not-allowed" : ""
                   }`}
                 >
-                  {loading ? (
-                    <img
-                      src={LoadingImg}
-                      alt="Loading"
-                      className="w-6 h-6 inline-block"
-                    />
-                  ) : (
-                    "Đăng nhập"
-                  )}
+                  Đăng nhập
                 </button>
               </div>
             </div>

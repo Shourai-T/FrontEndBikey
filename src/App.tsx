@@ -39,6 +39,7 @@ function App() {
 
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
+
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/admin/home" element={<AdminHome />} />
         </Route>
@@ -60,7 +61,6 @@ function App() {
           <Route path="/search-station" element={<SearchStation />} />
           <Route path="/report" element={<RPFeedback />} />
         </Route>
-
       </Routes>
     </Router>
   );

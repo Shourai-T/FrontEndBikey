@@ -305,7 +305,7 @@ const AdminHome = () => {
           {/* Mobile Header (chỉ hiển thị khi <768px) */}
           <div className="h-14 px-6 bg-white flex items-center md:hidden">
             <p>
-              Xin chào, <strong>Nguyễn Văn A</strong>
+              Xin chào, <strong>{user.fullName}</strong>
             </p>
           </div>
 
